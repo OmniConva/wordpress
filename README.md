@@ -10,7 +10,7 @@ Early stage. The settings screen and the frontend widget loading work end to end
 
 - No REST routes are registered yet (`includes/Api.php` hooks `rest_api_init` with an empty callback).
 - No database tables are created yet (`Installer::create_tables()` is an empty `dbDelta` stub).
-- The shortcode `[bbt_ai_sales_agent_connector]` renders a placeholder string, and its constructor doc block is unclosed, so the shortcode is never registered.
+- The shortcode `[bbt_ai_sales_agent_connector]` renders a placeholder string.
 - The template helper functions reference `BBT_AI_SALES_CONNECTOR_TEMPLATE_PATH`, which is not defined anywhere yet.
 - The widget's API base is hardcoded to `http://localhost:4700` in `includes/Assets.php` and must be made configurable before any non-local deployment.
 
@@ -19,7 +19,7 @@ Early stage. The settings screen and the frontend widget loading work end to end
 | Item | Version |
 | --- | --- |
 | WordPress | 4.0 or newer |
-| PHP | 7.0 or newer (Composer dev tooling targets 7.0+; the plugin readme claims 5.6) |
+| PHP | 7.0 or newer |
 
 ## Installation
 

@@ -8,6 +8,7 @@
  * Author URI: https://bitbytetechnology.com/
  * License: GPLv2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Requires PHP: 7.0
  * Text Domain: bbt_ai_sales_connector
  * Domain Path: /languages
  * 

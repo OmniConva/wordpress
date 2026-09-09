@@ -18,7 +18,7 @@ class Shortcode {
      * @since 1.0.0
      * 
      * @return void
-     * /
+     */
     public function __construct() {
         add_shortcode( 'bbt_ai_sales_agent_connector', [ $this, 'render_frontend' ] );
     }
