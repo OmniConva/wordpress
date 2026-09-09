@@ -1,0 +1,33 @@
+{
+    "name": "bitbytetechnology/bbt-ai-sales-agent-connector",
+    "description": "Integrate BBT AI Sales Agent within Saas",
+    "type": "wordpress-plugin",
+    "license": "GPLv2",
+    "authors": [
+        {
+            "name": "BitByte Technology",
+            "email": "info@bitbytetechnology.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "require": {},
+    "require-dev": {
+        "wp-coding-standards/wpcs": "^3.0",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+        "phpcompatibility/phpcompatibility-wp": "dev-master",
+        "phpunit/phpunit": ">=5.7.27"
+    },
+    "autoload": {
+        "psr-4": {
+            "BitByte\\AiSalesAgentConnector\\": "includes/"
+        },
+        "files": [
+            "includes/functions.php"
+        ]
+    }
+}
