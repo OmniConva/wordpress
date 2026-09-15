@@ -102,12 +102,13 @@ class Assets {
 		$id   = (string) $user->ID;
 
 		return array(
-			'id'      => $id,
-			'name'    => $user->display_name,
-			'email'   => $user->user_email,
-			'phone'   => get_user_meta( $user->ID, 'billing_phone', true ),
-			'address' => get_user_meta( $user->ID, 'billing_address_1', true ),
-			'hash'    => hash_hmac( 'sha256', $id, $identity_secret ),
+			'id'         => $id,
+			'name'       => $user->display_name,
+			'email'      => $user->user_email,
+			'phone'      => get_user_meta( $user->ID, 'billing_phone', true ),
+			'address'    => get_user_meta( $user->ID, 'billing_address_1', true ),
+			'avatar_url' => get_avatar_url( $user->ID ),
+			'hash'       => hash_hmac( 'sha256', $id, $identity_secret ),
 		);
 	}
 
