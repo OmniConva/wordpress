@@ -87,6 +87,14 @@ class Menu {
 			self::PAGE_SLUG,
 			'bbt_ai_sales_connector_general'
 		);
+
+		add_settings_field(
+			'identity_secret',
+			__( 'Identity Secret', 'bbt_ai_sales_connector' ),
+			array( $this, 'render_identity_secret_field' ),
+			self::PAGE_SLUG,
+			'bbt_ai_sales_connector_general'
+		);
 	}
 
 	/**
@@ -101,7 +109,8 @@ class Menu {
 	public function sanitize_settings( $settings ) {
 		$sanitized = array();
 
-		$sanitized['site_key'] = isset( $settings['site_key'] ) ? sanitize_text_field( $settings['site_key'] ) : '';
+		$sanitized['site_key']        = isset( $settings['site_key'] ) ? sanitize_text_field( $settings['site_key'] ) : '';
+		$sanitized['identity_secret'] = isset( $settings['identity_secret'] ) ? sanitize_text_field( $settings['identity_secret'] ) : '';
 
 		return $sanitized;
 	}
@@ -124,6 +133,31 @@ class Menu {
 			value="<?php echo esc_attr( $site_key ); ?>"
 			class="regular-text"
 		/>
+		<?php
+	}
+
+	/**
+	 * Render the Identity Secret field.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function render_identity_secret_field() {
+		$settings        = get_option( self::OPTION_NAME );
+		$identity_secret = isset( $settings['identity_secret'] ) ? $settings['identity_secret'] : '';
+		?>
+		<input
+			type="password"
+			id="bbt_ai_sales_connector_identity_secret"
+			name="<?php echo esc_attr( self::OPTION_NAME ); ?>[identity_secret]"
+			value="<?php echo esc_attr( $identity_secret ); ?>"
+			class="regular-text"
+			autocomplete="new-password"
+		/>
+		<p class="description">
+			<?php esc_html_e( 'Used to sign logged-in customer identities (HMAC-SHA256). Keep this secret; it is never sent to the browser.', 'bbt_ai_sales_connector' ); ?>
+		</p>
 		<?php
 	}
 

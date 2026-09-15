@@ -60,20 +60,54 @@ class Assets {
 			return;
 		}
 
+		$config = array(
+			'siteKey' => $site_key,
+			'apiBase' => 'http://localhost:4700',
+		);
+
+		$customer = $this->get_customer( $settings );
+
+		if ( $customer ) {
+			$config['customer'] = $customer;
+		}
+
 		wp_enqueue_script( 'bbt-ai-sales-agent-connector-widget' );
 
 		wp_add_inline_script(
 			'bbt-ai-sales-agent-connector-widget',
-			sprintf(
-				'window.BBTWidget = %s;',
-				wp_json_encode(
-					array(
-						'siteKey' => $site_key,
-						'apiBase' => 'http://localhost:4700',
-					)
-				)
-			),
+			sprintf( 'window.BBTWidget = %s;', wp_json_encode( $config ) ),
 			'before'
+		);
+	}
+
+	/**
+	 * Build the signed identity payload for the logged-in user.
+	 *
+	 * Returns null when no user is logged in or no Identity Secret is configured.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $settings Plugin settings.
+	 *
+	 * @return array|null
+	 */
+	private function get_customer( $settings ) {
+		$identity_secret = isset( $settings['identity_secret'] ) ? $settings['identity_secret'] : '';
+
+		if ( empty( $identity_secret ) || ! is_user_logged_in() ) {
+			return null;
+		}
+
+		$user = wp_get_current_user();
+		$id   = (string) $user->ID;
+
+		return array(
+			'id'      => $id,
+			'name'    => $user->display_name,
+			'email'   => $user->user_email,
+			'phone'   => get_user_meta( $user->ID, 'billing_phone', true ),
+			'address' => get_user_meta( $user->ID, 'billing_address_1', true ),
+			'hash'    => hash_hmac( 'sha256', $id, $identity_secret ),
 		);
 	}
 
