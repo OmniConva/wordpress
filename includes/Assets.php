@@ -15,6 +15,15 @@ use OmniConva\AiSalesAgentConnector\Admin;
 class Assets {
 
 	/**
+	 * API base URL used when OMNICONVA_API_BASE is not defined.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
+	const DEFAULT_API_BASE = 'https://api.omniconva.com';
+
+	/**
 	 * Assets constructor.
 	 *
 	 * @since 1.0.0
@@ -62,7 +71,7 @@ class Assets {
 
 		$config = array(
 			'siteKey' => $site_key,
-			'apiBase' => 'http://localhost:4700',
+			'apiBase' => $this->get_api_base(),
 		);
 
 		$customer = $this->get_customer( $settings );
@@ -75,9 +84,30 @@ class Assets {
 
 		wp_add_inline_script(
 			'omniconva-ai-sales-agent-connector-widget',
-			sprintf( 'window.BBTWidget = %s;', wp_json_encode( $config ) ),
+			sprintf( 'window.OmniConvaChat = %s;', wp_json_encode( $config ) ),
 			'before'
 		);
+	}
+
+	/**
+	 * Resolve the API base URL the widget talks to.
+	 *
+	 * Sites can point the widget at another backend, a self-hosted instance or a
+	 * local development API, by defining OMNICONVA_API_BASE in wp-config.php.
+	 * Anything else falls back to the hosted API.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string API base URL without a trailing slash.
+	 */
+	public function get_api_base() {
+		$api_base = self::DEFAULT_API_BASE;
+
+		if ( defined( 'OMNICONVA_API_BASE' ) && is_string( OMNICONVA_API_BASE ) && '' !== trim( OMNICONVA_API_BASE ) ) {
+			$api_base = trim( OMNICONVA_API_BASE );
+		}
+
+		return untrailingslashit( esc_url_raw( $api_base ) );
 	}
 
 	/**

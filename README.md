@@ -45,10 +45,16 @@ The value is stored in the `omniconva_ai_sales_connector_settings` option under 
 Once a key is set, the plugin enqueues `assets/js/widget.min.js` in the footer and prints a config object ahead of it:
 
 ```js
-window.BBTWidget = { siteKey: '…', apiBase: 'http://localhost:4700' };
+window.OmniConvaChat = { siteKey: '…', apiBase: 'https://api.omniconva.com' };
 ```
 
-The bundle reads that object, fetches its configuration from `/api/widget/config/`, and talks to `/api/widget/` on the same host. It also tracks browsing history in `localStorage` under `bbt_browse_history`.
+`apiBase` defaults to `https://api.omniconva.com`. To point the widget at a self-hosted backend or a local development API, define the constant in `wp-config.php` before the plugin loads:
+
+```php
+define( 'OMNICONVA_API_BASE', 'http://localhost:4700' );
+```
+
+The bundle reads that object, fetches its configuration from `/api/widget/config/`, and talks to `/api/widget/` on the same host. It also tracks browsing history in `localStorage` under `omniconva_browse_history`.
 
 ## Architecture
 
