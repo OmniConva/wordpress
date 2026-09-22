@@ -1,6 +1,6 @@
 {
     "name": "omniconva/omniconva-ai-sales-agent-connector",
-    "description": "Integrate OmniConva AI Sales Agent within Saas",
+    "description": "Add an AI sales agent chatbot to WordPress and WooCommerce. It answers shoppers, captures leads and helps them order in live chat, 24/7.",
     "type": "wordpress-plugin",
     "license": "GPLv2",
     "authors": [

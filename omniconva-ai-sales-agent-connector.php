@@ -2,7 +2,7 @@
 /**
  * Plugin Name: OmniConva AI Sales Agent Connector
  * Plugin URI: https://wordpress.org/plugins/omniconva-ai-sales-agent-connector
- * Description: Integrate OmniConva AI Sales Agent within Saas
+ * Description: Add an AI sales agent chatbot to WordPress and WooCommerce. It answers shoppers, captures leads and helps them order in live chat, 24/7.
  * Version: 1.0.0
  * Author: Nurul Amin
  * Author URI: https://omniconva.com/
@@ -222,9 +222,6 @@ final class Omniconva_ai_sales_connector {
      */
     public function init_hooks() {
         add_action( 'init', [ $this, 'init_classes' ] );
-
-        // Localize our plugin
-        add_action( 'init', [ $this, 'localization_setup' ] );
     }
 
     /**
@@ -241,19 +238,6 @@ final class Omniconva_ai_sales_connector {
 
         $this->container['api']    = new OmniConva\AiSalesAgentConnector\Api();
         $this->container['assets'] = new OmniConva\AiSalesAgentConnector\Assets();
-    }
-
-    /**
-     * Initialize plugin for localization.
-     *
-     * @uses load_plugin_textdomain()
-     * 
-     * @since 1.0.0
-     * 
-     * @return void
-     */
-    public function localization_setup() {
-        load_plugin_textdomain( 'omniconva-ai-sales-agent-connector', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
     }
 
     /**
