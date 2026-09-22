@@ -1,18 +1,18 @@
 <?php
 /**
- * Plugin Name: BBT AI Sales Agent Connector
- * Plugin URI: https://wordpress.org/plugins/bbt-ai-sales
- * Description: Integrate BBT AI Sales Agent within Saas
+ * Plugin Name: OmniConva AI Sales Agent Connector
+ * Plugin URI: https://wordpress.org/plugins/omniconva-ai-sales
+ * Description: Integrate OmniConva AI Sales Agent within Saas
  * Version: 1.0.0
  * Author: BitByte Technology
  * Author URI: https://bitbytetechnology.com/
  * License: GPLv2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires PHP: 7.0
- * Text Domain: bbt_ai_sales_connector
+ * Text Domain: omniconva-ai-sales-agent-connector
  * Domain Path: /languages
  * 
- * @package BBT AI Sales Agent Connector
+ * @package OmniConva AI Sales Agent Connector
  */
 
 /**
@@ -49,11 +49,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once __DIR__ . '/vendor/autoload.php';
 
 /**
- * Bbt_ai_sales_connector class
+ * Omniconva_ai_sales_connector class
  *
- * @class Bbt_ai_sales_connector The class that holds the entire Bbt_ai_sales_connector plugin
+ * @class Omniconva_ai_sales_connector The class that holds the entire Omniconva_ai_sales_connector plugin
  */
-final class Bbt_ai_sales_connector {
+final class Omniconva_ai_sales_connector {
     /**
      * Plugin version
      *
@@ -73,7 +73,7 @@ final class Bbt_ai_sales_connector {
     private $container = [];
 
     /**
-     * Constructor for the Bbt_ai_sales_connector class.
+     * Constructor for the Omniconva_ai_sales_connector class.
      *
      * Sets up all the appropriate hooks and actions
      * within our plugin.
@@ -90,20 +90,20 @@ final class Bbt_ai_sales_connector {
     }
 
     /**
-     * Initializes the Bbt_ai_sales_connector() class.
+     * Initializes the Omniconva_ai_sales_connector() class.
      *
-     * Checks for an existing Bbt_ai_sales_connector() instance
+     * Checks for an existing Omniconva_ai_sales_connector() instance
      * and if it doesn't find one, creates it.
      * 
      * @since 1.0.0
      *
-     * @return Bbt_ai_sales_connector|bool
+     * @return Omniconva_ai_sales_connector|bool
      */
     public static function init() {
         static $instance = false;
 
         if ( ! $instance ) {
-            $instance = new Bbt_ai_sales_connector();
+            $instance = new Omniconva_ai_sales_connector();
         }
 
         return $instance;
@@ -147,12 +147,12 @@ final class Bbt_ai_sales_connector {
      * @return void
      */
     public function define_constants() {
-        define( 'BBT_AI_SALES_CONNECTOR_VERSION', self::VERSION );
-        define( 'BBT_AI_SALES_CONNECTOR_FILE', __FILE__ );
-        define( 'BBT_AI_SALES_CONNECTOR_PATH', dirname( BBT_AI_SALES_CONNECTOR_FILE ) );
-        define( 'BBT_AI_SALES_CONNECTOR_INCLUDES', BBT_AI_SALES_CONNECTOR_PATH . '/includes' );
-        define( 'BBT_AI_SALES_CONNECTOR_URL', plugins_url( '', BBT_AI_SALES_CONNECTOR_FILE ) );
-        define( 'BBT_AI_SALES_CONNECTOR_ASSETS', BBT_AI_SALES_CONNECTOR_URL . '/assets' );
+        define( 'OMNICONVA_AI_SALES_CONNECTOR_VERSION', self::VERSION );
+        define( 'OMNICONVA_AI_SALES_CONNECTOR_FILE', __FILE__ );
+        define( 'OMNICONVA_AI_SALES_CONNECTOR_PATH', dirname( OMNICONVA_AI_SALES_CONNECTOR_FILE ) );
+        define( 'OMNICONVA_AI_SALES_CONNECTOR_INCLUDES', OMNICONVA_AI_SALES_CONNECTOR_PATH . '/includes' );
+        define( 'OMNICONVA_AI_SALES_CONNECTOR_URL', plugins_url( '', OMNICONVA_AI_SALES_CONNECTOR_FILE ) );
+        define( 'OMNICONVA_AI_SALES_CONNECTOR_ASSETS', OMNICONVA_AI_SALES_CONNECTOR_URL . '/assets' );
     }
 
     /**
@@ -177,7 +177,7 @@ final class Bbt_ai_sales_connector {
      * @return void
      */
     public function activate() {
-        $installer = new BitByte\AiSalesAgentConnector\Installer();
+        $installer = new OmniConva\AiSalesAgentConnector\Installer();
         $installer->run();
     }
 
@@ -201,15 +201,15 @@ final class Bbt_ai_sales_connector {
      */
     public function includes() {
         if ( $this->is_request( 'admin' ) ) {
-            $this->container['admin'] = new BitByte\AiSalesAgentConnector\Admin();
+            $this->container['admin'] = new OmniConva\AiSalesAgentConnector\Admin();
         }
 
         if ( $this->is_request( 'frontend' ) ) {
-            $this->container['frontend'] = new BitByte\AiSalesAgentConnector\Frontend();
+            $this->container['frontend'] = new OmniConva\AiSalesAgentConnector\Frontend();
         }
 
         if ( $this->is_request( 'ajax' ) ) {
-            // require_once BBT_AI_SALES_CONNECTOR_INCLUDES . '/class-ajax.php';
+            // require_once OMNICONVA_AI_SALES_CONNECTOR_INCLUDES . '/class-ajax.php';
         }
     }
 
@@ -236,11 +236,11 @@ final class Bbt_ai_sales_connector {
      */
     public function init_classes() {
         if ( $this->is_request( 'ajax' ) ) {
-            // $this->container['ajax'] =  new BitByte\AiSalesAgentConnector\Ajax();
+            // $this->container['ajax'] =  new OmniConva\AiSalesAgentConnector\Ajax();
         }
 
-        $this->container['api']    = new BitByte\AiSalesAgentConnector\Api();
-        $this->container['assets'] = new BitByte\AiSalesAgentConnector\Assets();
+        $this->container['api']    = new OmniConva\AiSalesAgentConnector\Api();
+        $this->container['assets'] = new OmniConva\AiSalesAgentConnector\Assets();
     }
 
     /**
@@ -253,7 +253,7 @@ final class Bbt_ai_sales_connector {
      * @return void
      */
     public function localization_setup() {
-        load_plugin_textdomain( 'bbt_ai_sales_connector', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+        load_plugin_textdomain( 'omniconva-ai-sales-agent-connector', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
     }
 
     /**
@@ -284,17 +284,17 @@ final class Bbt_ai_sales_connector {
         }
     }
 
-} // Bbt_ai_sales_connector
+} // Omniconva_ai_sales_connector
 
 /**
  * Initialize the main plugin.
  * 
  * @since 1.0.0
  *
- * @return \Bbt_ai_sales_connector|bool
+ * @return \Omniconva_ai_sales_connector|bool
  */
-function bbt_ai_sales_connector() {
-    return Bbt_ai_sales_connector::init();
+function omniconva_ai_sales_connector() {
+    return Omniconva_ai_sales_connector::init();
 }
 
 /**
@@ -302,4 +302,4 @@ function bbt_ai_sales_connector() {
  * 
  * @since 1.0.0
  */
-bbt_ai_sales_connector();
+omniconva_ai_sales_connector();

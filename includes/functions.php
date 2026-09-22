@@ -18,7 +18,7 @@
  *
  * @return void
  */
-function bbt_ai_sales_connector_get_template_part( $slug, $name = '', $args = [] ) {
+function omniconva_ai_sales_connector_get_template_part( $slug, $name = '', $args = [] ) {
   $defaults = [ 'pro' => false ];
 
   $args = wp_parse_args( $args, $defaults );
@@ -29,11 +29,11 @@ function bbt_ai_sales_connector_get_template_part( $slug, $name = '', $args = []
 
   $template = '';
 
-  // Look in yourtheme/bbt-ai-sales-agent-connector/slug-name.php and yourtheme/bbt-ai-sales-agent-connector/slug.php.
+  // Look in yourtheme/omniconva-ai-sales-agent-connector/slug-name.php and yourtheme/omniconva-ai-sales-agent-connector/slug.php.
   $template = locate_template(
     [
-      BBT_AI_SALES_CONNECTOR_TEMPLATE_PATH . "{$slug}-{$name}.php",
-      BBT_AI_SALES_CONNECTOR_TEMPLATE_PATH . "{$slug}.php",
+      OMNICONVA_AI_SALES_CONNECTOR_TEMPLATE_PATH . "{$slug}-{$name}.php",
+      OMNICONVA_AI_SALES_CONNECTOR_TEMPLATE_PATH . "{$slug}.php",
     ]
   );
 
@@ -42,7 +42,7 @@ function bbt_ai_sales_connector_get_template_part( $slug, $name = '', $args = []
   *
   * @since 1.0.0
   */
-  $template_path = apply_filters( 'bbt_ai_sales_connector_set_template_path', BBT_AI_SALES_CONNECTOR_TEMPLATE_PATH, $template, $args );
+  $template_path = apply_filters( 'omniconva_ai_sales_connector_set_template_path', OMNICONVA_AI_SALES_CONNECTOR_TEMPLATE_PATH, $template, $args );
 
   // Get default slug-name.php.
   if ( ! $template && $name && file_exists( $template_path . "/{$slug}-{$name}.php" ) ) {
@@ -54,7 +54,7 @@ function bbt_ai_sales_connector_get_template_part( $slug, $name = '', $args = []
   }
 
   // Allow 3rd party plugin filter template file from their plugin.
-  $template = apply_filters( 'bbt_ai_sales_connector_get_template_part', $template, $slug, $name );
+  $template = apply_filters( 'omniconva_ai_sales_connector_get_template_part', $template, $slug, $name );
 
   if ( $template ) {
     include $template;
@@ -73,14 +73,14 @@ function bbt_ai_sales_connector_get_template_part( $slug, $name = '', $args = []
 *
 * @return void
 */
-function bbt_ai_sales_connector_get_template( $template_name, $args = [], $template_path = '', $default_path = '' ) {
+function omniconva_ai_sales_connector_get_template( $template_name, $args = [], $template_path = '', $default_path = '' ) {
   if ( $args && is_array( $args ) ) {
     extract( $args ); //phpcs:ignore
   }
 
-  $extension = bbt_ai_sales_connector_get_extension( $template_name ) ? '' : '.php';
+  $extension = omniconva_ai_sales_connector_get_extension( $template_name ) ? '' : '.php';
 
-  $located = bbt_ai_sales_connector_locate_template( $template_name . $extension, $template_path, $default_path );
+  $located = omniconva_ai_sales_connector_locate_template( $template_name . $extension, $template_path, $default_path );
 
   if ( ! file_exists( $located ) ) {
     _doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', esc_html( $located ) ), '2.1' );
@@ -88,11 +88,11 @@ function bbt_ai_sales_connector_get_template( $template_name, $args = [], $templ
     return;
   }
 
-  do_action( 'bbt_ai_sales_connector_before_template_part', $template_name, $template_path, $located, $args );
+  do_action( 'omniconva_ai_sales_connector_before_template_part', $template_name, $template_path, $located, $args );
 
   include $located;
 
-  do_action( 'bbt_ai_sales_connector_after_template_part', $template_name, $template_path, $located, $args );
+  do_action( 'omniconva_ai_sales_connector_after_template_part', $template_name, $template_path, $located, $args );
 }
 
 /**
@@ -112,13 +112,13 @@ function bbt_ai_sales_connector_get_template( $template_name, $args = [], $templ
 *
 * @return string
 */
-function bbt_ai_sales_connector_locate_template( $template_name, $template_path = '', $default_path = '' ) {
+function omniconva_ai_sales_connector_locate_template( $template_name, $template_path = '', $default_path = '' ) {
   if ( ! $template_path ) {
-    $template_path = BBT_AI_SALES_CONNECTOR_TEMPLATE_PATH;
+    $template_path = OMNICONVA_AI_SALES_CONNECTOR_TEMPLATE_PATH;
   }
 
   if ( ! $default_path ) {
-    $default_path = BBT_AI_SALES_CONNECTOR_TEMPLATE_PATH;
+    $default_path = OMNICONVA_AI_SALES_CONNECTOR_TEMPLATE_PATH;
   }
 
   // Look within passed path within the theme - this is priority.
@@ -134,7 +134,7 @@ function bbt_ai_sales_connector_locate_template( $template_name, $template_path 
   }
 
   // Return what we found.
-  return apply_filters( 'bbt_ai_sales_connector_locate_template', $template, $template_name, $template_path );
+  return apply_filters( 'omniconva_ai_sales_connector_locate_template', $template, $template_name, $template_path );
 }
 
 /**
@@ -146,7 +146,7 @@ function bbt_ai_sales_connector_locate_template( $template_name, $template_path 
 *
 * @return false|string
 */
-function bbt_ai_sales_connector_get_extension( $file_name ) {
+function omniconva_ai_sales_connector_get_extension( $file_name ) {
   $n = strrpos( $file_name, '.' );
 
   return ( false === $n ) ? '' : substr( $file_name, $n + 1 );

@@ -1,6 +1,6 @@
-# BBT AI Sales Agent Connector
+# OmniConva AI Sales Agent Connector
 
-WordPress plugin that drops the BBT AI Sales Agent chat widget onto a WordPress site. An administrator pastes a Site Key on a settings screen, and the plugin loads the widget bundle on the frontend and points it at the BBT AI Sales Agent backend.
+WordPress plugin that drops the OmniConva AI Sales Agent chat widget onto a WordPress site. An administrator pastes a Site Key on a settings screen, and the plugin loads the widget bundle on the frontend and points it at the OmniConva AI Sales Agent backend.
 
 > Private repository — internal BitByte Technology project. Not published on WordPress.org.
 
@@ -10,8 +10,8 @@ Early stage. The settings screen and the frontend widget loading work end to end
 
 - No REST routes are registered yet (`includes/Api.php` hooks `rest_api_init` with an empty callback).
 - No database tables are created yet (`Installer::create_tables()` is an empty `dbDelta` stub).
-- The shortcode `[bbt_ai_sales_agent_connector]` renders a placeholder string.
-- The template helper functions reference `BBT_AI_SALES_CONNECTOR_TEMPLATE_PATH`, which is not defined anywhere yet.
+- The shortcode `[omniconva_ai_sales_agent_connector]` renders a placeholder string.
+- The template helper functions reference `OMNICONVA_AI_SALES_CONNECTOR_TEMPLATE_PATH`, which is not defined anywhere yet.
 - The widget's API base is hardcoded to `http://localhost:4700` in `includes/Assets.php` and must be made configurable before any non-local deployment.
 
 ## Requirements
@@ -27,20 +27,20 @@ Clone into the plugins directory and install the Composer autoloader. The plugin
 
 ```bash
 cd wp-content/plugins
-git clone git@github.com:Biz-Cockpit/wp-plugin.git bbt-ai-sales-agent-connector
-cd bbt-ai-sales-agent-connector
+git clone git@github.com:Biz-Cockpit/wp-plugin.git omniconva-ai-sales-agent-connector
+cd omniconva-ai-sales-agent-connector
 composer install
 ```
 
-Then activate **BBT AI Sales Agent Connector** from the Plugins screen.
+Then activate **OmniConva AI Sales Agent Connector** from the Plugins screen.
 
 `vendor/` is git-ignored, so `composer install` is required on every fresh checkout and on every deploy target.
 
 ## Configuration
 
-Go to **Settings → BBT AI Sales Agent**, or use the Settings link on the plugin's row on the Plugins screen. Enter the Site Key issued by the BBT AI Sales Agent backend and save.
+Go to **Settings → OmniConva AI Sales Agent**, or use the Settings link on the plugin's row on the Plugins screen. Enter the Site Key issued by the OmniConva AI Sales Agent backend and save.
 
-The value is stored in the `bbt_ai_sales_connector_settings` option under the `site_key` key. While the Site Key is empty, the widget script is registered but never enqueued, so nothing loads on the frontend.
+The value is stored in the `omniconva_ai_sales_connector_settings` option under the `site_key` key. While the Site Key is empty, the widget script is registered but never enqueued, so nothing loads on the frontend.
 
 Once a key is set, the plugin enqueues `assets/js/widget.min.js` in the footer and prints a config object ahead of it:
 
@@ -52,15 +52,15 @@ The bundle reads that object, fetches its configuration from `/api/widget/config
 
 ## Architecture
 
-The bootstrap file defines a singleton `Bbt_ai_sales_connector` class, requires the Composer autoloader, defines the `BBT_AI_SALES_CONNECTOR_*` path and URL constants, and wires the WordPress lifecycle. Instantiated classes live in a private container exposed through magic getters, so `bbt_ai_sales_connector()->assets` reaches the `Assets` instance.
+The bootstrap file defines a singleton `Omniconva_ai_sales_connector` class, requires the Composer autoloader, defines the `OMNICONVA_AI_SALES_CONNECTOR_*` path and URL constants, and wires the WordPress lifecycle. Instantiated classes live in a private container exposed through magic getters, so `omniconva_ai_sales_connector()->assets` reaches the `Assets` instance.
 
 Activation runs `Installer::run()`, which stores an install timestamp and the current version. On `plugins_loaded` the plugin instantiates `Admin` for admin requests and `Frontend` for frontend and AJAX requests, then on `init` instantiates `API` and `Assets` unconditionally and loads the text domain.
 
-Classes are PSR-4 autoloaded from `includes/` under the `BitByte\AiSalesAgentConnector\` namespace, and the directory layout mirrors the namespace one to one.
+Classes are PSR-4 autoloaded from `includes/` under the `OmniConva\AiSalesAgentConnector\` namespace, and the directory layout mirrors the namespace one to one.
 
 | Path | Responsibility |
 | --- | --- |
-| `bbt-ai-sales-agent-connector.php` | Bootstrap, constants, lifecycle hooks, container |
+| `omniconva-ai-sales-agent-connector.php` | Bootstrap, constants, lifecycle hooks, container |
 | `includes/Admin.php` | Admin entry point, instantiates the menu |
 | `includes/Admin/Menu.php` | Settings page, Settings API registration, sanitization |
 | `includes/Frontend.php` | Frontend entry point, instantiates the shortcode |

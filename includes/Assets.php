@@ -2,12 +2,12 @@
 /**
  * Scripts and Styles Class.
  *
- * @package BitByte\AiSalesAgentConnector\Assets
+ * @package OmniConva\AiSalesAgentConnector\Assets
  */
 
-namespace BitByte\AiSalesAgentConnector;
+namespace OmniConva\AiSalesAgentConnector;
 
-use BitByte\AiSalesAgentConnector\Admin;
+use OmniConva\AiSalesAgentConnector\Admin;
 
 /**
  * Scripts and Styles Class
@@ -71,10 +71,10 @@ class Assets {
 			$config['customer'] = $customer;
 		}
 
-		wp_enqueue_script( 'bbt-ai-sales-agent-connector-widget' );
+		wp_enqueue_script( 'omniconva-ai-sales-agent-connector-widget' );
 
 		wp_add_inline_script(
-			'bbt-ai-sales-agent-connector-widget',
+			'omniconva-ai-sales-agent-connector-widget',
 			sprintf( 'window.BBTWidget = %s;', wp_json_encode( $config ) ),
 			'before'
 		);
@@ -125,7 +125,7 @@ class Assets {
 		foreach ( $scripts as $handle => $script ) {
 			$deps      = isset( $script['deps'] ) ? $script['deps'] : false;
 			$in_footer = isset( $script['in_footer'] ) ? $script['in_footer'] : false;
-			$version   = isset( $script['version'] ) ? $script['version'] : BBT_AI_SALES_CONNECTOR_VERSION;
+			$version   = isset( $script['version'] ) ? $script['version'] : OMNICONVA_AI_SALES_CONNECTOR_VERSION;
 
 			wp_register_script( $handle, $script['src'], $deps, $version, $in_footer );
 		}
@@ -144,7 +144,7 @@ class Assets {
 		foreach ( $styles as $handle => $style ) {
 			$deps = isset( $style['deps'] ) ? $style['deps'] : false;
 
-			wp_register_style( $handle, $style['src'], $deps, BBT_AI_SALES_CONNECTOR_VERSION );
+			wp_register_style( $handle, $style['src'], $deps, OMNICONVA_AI_SALES_CONNECTOR_VERSION );
 		}
 	}
 
@@ -156,10 +156,10 @@ class Assets {
 	 * @return array
 	 */
 	public function get_scripts() {
-		$plugin_js_assets_path = BBT_AI_SALES_CONNECTOR_ASSETS . '/js/';
+		$plugin_js_assets_path = OMNICONVA_AI_SALES_CONNECTOR_ASSETS . '/js/';
 
 		$scripts = array(
-			'bbt-ai-sales-agent-connector-widget' => array(
+			'omniconva-ai-sales-agent-connector-widget' => array(
 				'src'       => $plugin_js_assets_path . 'widget.min.js',
 				'deps'      => array(),
 				'in_footer' => true,
@@ -177,7 +177,7 @@ class Assets {
 	 * @return array
 	 */
 	public function get_styles() {
-		$plugin_css_assets_path = BBT_AI_SALES_CONNECTOR_ASSETS . '/css/';
+		$plugin_css_assets_path = OMNICONVA_AI_SALES_CONNECTOR_ASSETS . '/css/';
 
 		$styles = array();
 

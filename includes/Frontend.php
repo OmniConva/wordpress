@@ -2,10 +2,10 @@
 /**
  * Frontend handler class
  * 
- * @package BitByte\AiSalesAgentConnector\Frontend
+ * @package OmniConva\AiSalesAgentConnector\Frontend
  */
 
-namespace BitByte\AiSalesAgentConnector;
+namespace OmniConva\AiSalesAgentConnector;
 
 /**
  * Frontend handler class

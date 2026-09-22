@@ -3,9 +3,9 @@
  * Admin Pages Handler
  * Class Menu
  *
- * @package BitByte\AiSalesAgentConnector\Admin
+ * @package OmniConva\AiSalesAgentConnector\Admin
  */
-namespace BitByte\AiSalesAgentConnector\Admin;
+namespace OmniConva\AiSalesAgentConnector\Admin;
 
 /**
  * Class Menu
@@ -18,7 +18,7 @@ class Menu {
 	 *
 	 * @var string
 	 */
-	const OPTION_NAME = 'bbt_ai_sales_connector_settings';
+	const OPTION_NAME = 'omniconva_ai_sales_connector_settings';
 
 	/**
 	 * Settings page slug.
@@ -27,7 +27,7 @@ class Menu {
 	 *
 	 * @var string
 	 */
-	const PAGE_SLUG = 'bbt-ai-sales-agent-connector';
+	const PAGE_SLUG = 'omniconva-ai-sales-agent-connector';
 
 	/**
 	 * Menu constructor.
@@ -39,7 +39,7 @@ class Menu {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
-		add_filter( 'plugin_action_links_' . plugin_basename( BBT_AI_SALES_CONNECTOR_FILE ), array( $this, 'plugin_action_links' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( OMNICONVA_AI_SALES_CONNECTOR_FILE ), array( $this, 'plugin_action_links' ) );
 	}
 
 	/**
@@ -51,8 +51,8 @@ class Menu {
 	 */
 	public function admin_menu() {
 		add_options_page(
-			__( 'BBT AI Sales Agent Connector', 'bbt_ai_sales_connector' ),
-			__( 'BBT AI Sales Agent', 'bbt_ai_sales_connector' ),
+			__( 'OmniConva AI Sales Agent Connector', 'omniconva-ai-sales-agent-connector' ),
+			__( 'OmniConva AI Sales Agent', 'omniconva-ai-sales-agent-connector' ),
 			'manage_options',
 			self::PAGE_SLUG,
 			array( $this, 'plugin_page' )
@@ -74,26 +74,26 @@ class Menu {
 		);
 
 		add_settings_section(
-			'bbt_ai_sales_connector_general',
-			__( 'General Settings', 'bbt_ai_sales_connector' ),
+			'omniconva_ai_sales_connector_general',
+			__( 'General Settings', 'omniconva-ai-sales-agent-connector' ),
 			'__return_false',
 			self::PAGE_SLUG
 		);
 
 		add_settings_field(
 			'site_key',
-			__( 'Site Key', 'bbt_ai_sales_connector' ),
+			__( 'Site Key', 'omniconva-ai-sales-agent-connector' ),
 			array( $this, 'render_site_key_field' ),
 			self::PAGE_SLUG,
-			'bbt_ai_sales_connector_general'
+			'omniconva_ai_sales_connector_general'
 		);
 
 		add_settings_field(
 			'identity_secret',
-			__( 'Identity Secret', 'bbt_ai_sales_connector' ),
+			__( 'Identity Secret', 'omniconva-ai-sales-agent-connector' ),
 			array( $this, 'render_identity_secret_field' ),
 			self::PAGE_SLUG,
-			'bbt_ai_sales_connector_general'
+			'omniconva_ai_sales_connector_general'
 		);
 	}
 
@@ -128,7 +128,7 @@ class Menu {
 		?>
 		<input
 			type="text"
-			id="bbt_ai_sales_connector_site_key"
+			id="omniconva_ai_sales_connector_site_key"
 			name="<?php echo esc_attr( self::OPTION_NAME ); ?>[site_key]"
 			value="<?php echo esc_attr( $site_key ); ?>"
 			class="regular-text"
@@ -149,14 +149,14 @@ class Menu {
 		?>
 		<input
 			type="password"
-			id="bbt_ai_sales_connector_identity_secret"
+			id="omniconva_ai_sales_connector_identity_secret"
 			name="<?php echo esc_attr( self::OPTION_NAME ); ?>[identity_secret]"
 			value="<?php echo esc_attr( $identity_secret ); ?>"
 			class="regular-text"
 			autocomplete="new-password"
 		/>
 		<p class="description">
-			<?php esc_html_e( 'Used to sign logged-in customer identities (HMAC-SHA256). Keep this secret; it is never sent to the browser.', 'bbt_ai_sales_connector' ); ?>
+			<?php esc_html_e( 'Used to sign logged-in customer identities (HMAC-SHA256). Keep this secret; it is never sent to the browser.', 'omniconva-ai-sales-agent-connector' ); ?>
 		</p>
 		<?php
 	}
@@ -174,7 +174,7 @@ class Menu {
 		$settings_link = sprintf(
 			'<a href="%s">%s</a>',
 			esc_url( admin_url( 'options-general.php?page=' . self::PAGE_SLUG ) ),
-			__( 'Settings', 'bbt_ai_sales_connector' )
+			__( 'Settings', 'omniconva-ai-sales-agent-connector' )
 		);
 
 		array_unshift( $links, $settings_link );

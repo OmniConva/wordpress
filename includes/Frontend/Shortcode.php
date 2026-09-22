@@ -2,10 +2,10 @@
 /**
  * Class Shortcode
  * 
- * @package BitByte\AiSalesAgentConnector\Frontend\Shortcode
+ * @package OmniConva\AiSalesAgentConnector\Frontend\Shortcode
  */
 
-namespace BitByte\AiSalesAgentConnector\Frontend;
+namespace OmniConva\AiSalesAgentConnector\Frontend;
 
 /**
  * Class Shortcode
@@ -20,7 +20,7 @@ class Shortcode {
      * @return void
      */
     public function __construct() {
-        add_shortcode( 'bbt_ai_sales_agent_connector', [ $this, 'render_frontend' ] );
+        add_shortcode( 'omniconva_ai_sales_agent_connector', [ $this, 'render_frontend' ] );
     }
 
     /**

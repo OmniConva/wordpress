@@ -1,6 +1,6 @@
 {
-    "name": "bitbytetechnology/bbt-ai-sales-agent-connector",
-    "description": "Integrate BBT AI Sales Agent within Saas",
+    "name": "bitbytetechnology/omniconva-ai-sales-agent-connector",
+    "description": "Integrate OmniConva AI Sales Agent within Saas",
     "type": "wordpress-plugin",
     "license": "GPLv2",
     "authors": [
@@ -24,7 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "BitByte\\AiSalesAgentConnector\\": "includes/"
+            "OmniConva\\AiSalesAgentConnector\\": "includes/"
         },
         "files": [
             "includes/functions.php"

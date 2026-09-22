@@ -2,10 +2,10 @@
 /**
  * Error handler trait
  * 
- * @package BitByte\AiSalesAgentConnector\Traits\Form_Error
+ * @package OmniConva\AiSalesAgentConnector\Traits\Form_Error
  */
 
-namespace BitByte\AiSalesAgentConnector\Traits;
+namespace OmniConva\AiSalesAgentConnector\Traits;
 
 /**
  * Error handler trait

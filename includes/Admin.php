@@ -2,10 +2,10 @@
 /**
  * The admin class
  * 
- * @package BitByte\AiSalesAgentConnector\Admin
+ * @package OmniConva\AiSalesAgentConnector\Admin
  */
 
-namespace BitByte\AiSalesAgentConnector;
+namespace OmniConva\AiSalesAgentConnector;
 
 /**
  * The admin class

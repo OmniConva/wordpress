@@ -3,14 +3,14 @@
  * The Installer class.
  * Install all dependency from here while activating the plugin.
  *
- * @package BitByte\AiSalesAgentConnector\Installer
+ * @package OmniConva\AiSalesAgentConnector\Installer
  */
 
-namespace BitByte\AiSalesAgentConnector;
+namespace OmniConva\AiSalesAgentConnector;
 
 /**
  * Class Installer
- * @package BitByte\AiSalesAgentConnector
+ * @package OmniConva\AiSalesAgentConnector
  */
 class Installer {
 
@@ -34,13 +34,13 @@ class Installer {
      * @return void
      */
     public function add_version() {
-        $installed = get_option( 'bbt_ai_sales_agent_connector_installed' );
+        $installed = get_option( 'omniconva_ai_sales_agent_connector_installed' );
 
         if ( ! $installed ) {
-            update_option( 'bbt_ai_sales_agent_connector_installed', time() );
+            update_option( 'omniconva_ai_sales_agent_connector_installed', time() );
         }
 
-        update_option( 'bbt_ai_sales_agent_connector_version', BBT_AI_SALES_CONNECTOR_VERSION );
+        update_option( 'omniconva_ai_sales_agent_connector_version', OMNICONVA_AI_SALES_CONNECTOR_VERSION );
     }
 
     /**

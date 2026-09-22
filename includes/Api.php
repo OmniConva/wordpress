@@ -2,10 +2,10 @@
 /**
  * API Class
  * 
- * @package BitByte\AiSalesAgentConnector\API
+ * @package OmniConva\AiSalesAgentConnector\API
  */
 
-namespace BitByte\AiSalesAgentConnector;
+namespace OmniConva\AiSalesAgentConnector;
 
 /**
  * API Class
