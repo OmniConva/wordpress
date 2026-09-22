@@ -2,8 +2,6 @@
 
 WordPress plugin that drops the OmniConva AI Sales Agent chat widget onto a WordPress site. An administrator pastes a Site Key on a settings screen, and the plugin loads the widget bundle on the frontend and points it at the OmniConva AI Sales Agent backend.
 
-> Private repository — internal BitByte Technology project. Not published on WordPress.org.
-
 ## Status
 
 Early stage. The settings screen and the frontend widget loading work end to end. Several scaffolded pieces are still placeholders:
@@ -100,4 +98,4 @@ PHPUnit is installed as a dev dependency, but there is no test suite yet. Runnin
 
 ## License
 
-GPLv2 or later. Copyright BitByte Technology.
+GPLv2 or later. Copyright Nurul Amin.

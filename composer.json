@@ -1,12 +1,12 @@
 {
-    "name": "bitbytetechnology/omniconva-ai-sales-agent-connector",
+    "name": "omniconva/omniconva-ai-sales-agent-connector",
     "description": "Integrate OmniConva AI Sales Agent within Saas",
     "type": "wordpress-plugin",
     "license": "GPLv2",
     "authors": [
         {
-            "name": "BitByte Technology",
-            "email": "info@bitbytetechnology.com"
+            "name": "Nurul Amin",
+            "email": "contact@omniconva.com"
         }
     ],
     "minimum-stability": "dev",

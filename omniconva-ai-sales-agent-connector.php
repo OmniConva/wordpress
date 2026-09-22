@@ -4,8 +4,8 @@
  * Plugin URI: https://wordpress.org/plugins/omniconva-ai-sales
  * Description: Integrate OmniConva AI Sales Agent within Saas
  * Version: 1.0.0
- * Author: BitByte Technology
- * Author URI: https://bitbytetechnology.com/
+ * Author: Nurul Amin
+ * Author URI: https://omniconva.com/
  * License: GPLv2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires PHP: 7.0
@@ -16,7 +16,7 @@
  */
 
 /**
- * Copyright (c) 2026 BitByte Technology (email: info@bitbytetechnology.com). All rights reserved.
+ * Copyright (c) 2026 Nurul Amin (email: contact@omniconva.com). All rights reserved.
  *
  * Released under the GPL license
  * http://www.opensource.org/licenses/gpl-license.php
