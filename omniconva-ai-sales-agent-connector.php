@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: OmniConva AI Sales Agent Connector
- * Plugin URI: https://wordpress.org/plugins/omniconva-ai-sales
+ * Plugin URI: https://wordpress.org/plugins/omniconva-ai-sales-agent-connector
  * Description: Integrate OmniConva AI Sales Agent within Saas
  * Version: 1.0.0
  * Author: Nurul Amin
