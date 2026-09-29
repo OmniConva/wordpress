@@ -83,6 +83,10 @@ This service is provided by OmniConva:
 
 Please mention this service in your site's privacy policy.
 
+== Source code ==
+
+`assets/js/widget.min.js` is built from the TypeScript source included in the plugin under `src/widget/`. To rebuild it, run `npm install` and then `npm run build` in that folder.
+
 == Installation ==
 
 = Automatic installation =
