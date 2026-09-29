@@ -8,6 +8,11 @@
 
 namespace OmniConva\AiSalesAgentConnector;
 
+// Don't call the file directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Class Installer
  * @package OmniConva\AiSalesAgentConnector
@@ -23,7 +28,6 @@ class Installer {
      */
     public function run() {
         $this->add_version();
-        $this->create_tables();
     }
 
     /**
@@ -42,21 +46,4 @@ class Installer {
 
         update_option( 'omniconva_ai_sales_agent_connector_version', OMNICONVA_AI_SALES_CONNECTOR_VERSION );
     }
-
-    /**
-     * Create necessary database tables.
-     * 
-     * @since 1.0.0
-     *
-     * @return void
-     */
-    public function create_tables() {
-        if ( ! function_exists( 'dbDelta' ) ) {
-            require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        }
-
-        
-    }
-
-    
 }

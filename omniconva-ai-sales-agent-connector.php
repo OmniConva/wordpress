@@ -10,7 +10,6 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires PHP: 7.0
  * Text Domain: omniconva-ai-sales-agent-connector
- * Domain Path: /languages
  * 
  * @package OmniConva AI Sales Agent Connector
  */

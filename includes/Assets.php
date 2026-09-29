@@ -7,6 +7,11 @@
 
 namespace OmniConva\AiSalesAgentConnector;
 
+// Don't call the file directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use OmniConva\AiSalesAgentConnector\Admin;
 
 /**

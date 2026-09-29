@@ -25,9 +25,6 @@
     "autoload": {
         "psr-4": {
             "OmniConva\\AiSalesAgentConnector\\": "includes/"
-        },
-        "files": [
-            "includes/functions.php"
-        ]
+        }
     }
 }
