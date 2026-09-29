@@ -70,8 +70,10 @@ class Assets {
 		}
 
 		$config = array(
-			'siteKey' => $site_key,
-			'apiBase' => $this->get_api_base(),
+			'siteKey'       => $site_key,
+			'apiBase'       => $this->get_api_base(),
+			// The credit link stays off unless the site owner opts in.
+			'showPoweredBy' => ! empty( $settings['show_powered_by'] ),
 		);
 
 		$customer = $this->get_customer( $settings );
@@ -145,7 +147,7 @@ class Assets {
 	/**
 	 * Register scripts
 	 *
-	 * @param array $scripts
+	 * @param array $scripts Scripts keyed by handle.
 	 *
 	 * @since 1.0.0
 	 *
@@ -164,7 +166,7 @@ class Assets {
 	/**
 	 * Register styles
 	 *
-	 * @param array $styles
+	 * @param array $styles Styles keyed by handle.
 	 *
 	 * @since 1.0.0
 	 *

@@ -204,10 +204,6 @@ final class Omniconva_ai_sales_connector {
             $this->container['admin'] = new OmniConva\AiSalesAgentConnector\Admin();
         }
 
-        if ( $this->is_request( 'frontend' ) ) {
-            $this->container['frontend'] = new OmniConva\AiSalesAgentConnector\Frontend();
-        }
-
         if ( $this->is_request( 'ajax' ) ) {
             // require_once OMNICONVA_AI_SALES_CONNECTOR_INCLUDES . '/class-ajax.php';
         }
