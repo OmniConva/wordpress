@@ -7,6 +7,11 @@
  */
 namespace OmniConva\AiSalesAgentConnector\Admin;
 
+// Don't call the file directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Class Menu
  */
@@ -95,6 +100,14 @@ class Menu {
 			self::PAGE_SLUG,
 			'omniconva_ai_sales_connector_general'
 		);
+
+		add_settings_field(
+			'show_powered_by',
+			__( 'Credit link', 'omniconva-ai-sales-agent-connector' ),
+			array( $this, 'render_show_powered_by_field' ),
+			self::PAGE_SLUG,
+			'omniconva_ai_sales_connector_general'
+		);
 	}
 
 	/**
@@ -111,6 +124,7 @@ class Menu {
 
 		$sanitized['site_key']        = isset( $settings['site_key'] ) ? sanitize_text_field( $settings['site_key'] ) : '';
 		$sanitized['identity_secret'] = isset( $settings['identity_secret'] ) ? sanitize_text_field( $settings['identity_secret'] ) : '';
+		$sanitized['show_powered_by'] = ! empty( $settings['show_powered_by'] );
 
 		return $sanitized;
 	}
@@ -158,6 +172,33 @@ class Menu {
 		<p class="description">
 			<?php esc_html_e( 'Used to sign logged-in customer identities (HMAC-SHA256). Keep this secret; it is never sent to the browser.', 'omniconva-ai-sales-agent-connector' ); ?>
 		</p>
+		<?php
+	}
+
+	/**
+	 * Render the opt-in checkbox for the "Powered by OmniConva" link.
+	 *
+	 * Off by default: the credit link only appears on the public site when
+	 * the site owner turns it on here.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function render_show_powered_by_field() {
+		$settings        = get_option( self::OPTION_NAME );
+		$show_powered_by = ! empty( $settings['show_powered_by'] );
+		?>
+		<label for="omniconva_ai_sales_connector_show_powered_by">
+			<input
+				type="checkbox"
+				id="omniconva_ai_sales_connector_show_powered_by"
+				name="<?php echo esc_attr( self::OPTION_NAME ); ?>[show_powered_by]"
+				value="1"
+				<?php checked( $show_powered_by ); ?>
+			/>
+			<?php esc_html_e( 'Show a "Powered by OmniConva" link in the chat widget', 'omniconva-ai-sales-agent-connector' ); ?>
+		</label>
 		<?php
 	}
 

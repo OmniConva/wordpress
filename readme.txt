@@ -83,6 +83,10 @@ This service is provided by OmniConva:
 
 Please mention this service in your site's privacy policy.
 
+== Source code ==
+
+`assets/js/widget.min.js` is built from the TypeScript source included in the plugin under `src/widget/`. To rebuild it, run `npm install` and then `npm run build` in that folder.
+
 == Installation ==
 
 = Automatic installation =
@@ -102,7 +106,8 @@ Please mention this service in your site's privacy policy.
 1. Go to **Settings → OmniConva AI Sales Agent**, or click **Settings** on the plugin's row on the Plugins screen.
 2. Paste the **Site Key** from your OmniConva dashboard.
 3. Optional: paste your **Identity Secret** to recognize logged-in customers.
-4. Click **Save Changes** and visit your site to see the AI chat widget.
+4. Optional: tick **Credit link** to show a "Powered by OmniConva" link in the widget. It is off by default.
+5. Click **Save Changes** and visit your site to see the AI chat widget.
 
 == Frequently Asked Questions ==
 
@@ -141,6 +146,10 @@ The plugin sends data to OmniConva only after you add a Site Key, and it never s
 = Can visitors send images, files or voice messages? =
 
 Yes. Visitors can attach photos, videos and files, or record a voice message in the browser.
+
+= Does the widget add a link to OmniConva on my site? =
+
+Only if you want it to. A "Powered by OmniConva" link in the chat widget is off by default. You can turn it on under **Settings → OmniConva AI Sales Agent → Credit link**.
 
 = Where do I see conversations and leads? =
 
