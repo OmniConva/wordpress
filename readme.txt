@@ -46,7 +46,7 @@ Customer identity is signed on your server with HMAC-SHA256 using your private I
 
 = Lightweight and simple =
 
-* Setup takes about a minute: paste your Site Key and save. You don't need to write any code.
+* Setup takes about a minute: add your site's domain in OmniConva, then paste your Site Key and save. You don't need to write any code.
 * A single script loads in the footer, and only after you have added a Site Key.
 * No new database tables, and no slowdown on your WordPress admin screens.
 * Works with any theme and page builder.
@@ -54,9 +54,10 @@ Customer identity is signed on your server with HMAC-SHA256 using your private I
 = How it works =
 
 1. Create an OmniConva account and set up your AI sales agent: its knowledge, tone, products and branding.
-2. Copy the Site Key from your OmniConva dashboard.
-3. Install this plugin and paste the key under **Settings → OmniConva AI Sales Agent**.
-4. The AI chat widget now appears on your site.
+2. In your OmniConva dashboard, go to **Settings → Custom Chat** and enter your website's domain (for example `yourstore.com`) under **Site domain**. The widget only loads on this domain.
+3. Copy the Site Key from the same page.
+4. Install this plugin and paste the key under **Settings → OmniConva AI Sales Agent**.
+5. The AI chat widget now appears on your site.
 
 You manage the AI agent's training, conversations, leads, human handoff and analytics in the OmniConva dashboard.
 
@@ -103,11 +104,12 @@ Please mention this service in your site's privacy policy.
 
 = Setup =
 
-1. Go to **Settings → OmniConva AI Sales Agent**, or click **Settings** on the plugin's row on the Plugins screen.
-2. Paste the **Site Key** from your OmniConva dashboard.
-3. Optional: paste your **Identity Secret** to recognize logged-in customers.
-4. Optional: tick **Credit link** to show a "Powered by OmniConva" link in the widget. It is off by default.
-5. Click **Save Changes** and visit your site to see the AI chat widget.
+1. In your OmniConva dashboard, open **Settings → Custom Chat** and enter your website's domain under **Site domain**. The widget only loads on the domain saved there.
+2. In WordPress, go to **Settings → OmniConva AI Sales Agent**, or click **Settings** on the plugin's row on the Plugins screen.
+3. Paste the **Site Key** from your OmniConva dashboard.
+4. Optional: paste your **Identity Secret** to recognize logged-in customers.
+5. Optional: tick **Credit link** to show a "Powered by OmniConva" link in the widget. It is off by default.
+6. Click **Save Changes** and visit your site to see the AI chat widget.
 
 == Frequently Asked Questions ==
 
@@ -126,6 +128,12 @@ Yes. The AI sales agent can guide a shopper through choosing products and help t
 = Can a human take over the chat? =
 
 Yes. Your team can join any conversation from the OmniConva dashboard. The widget shows the visitor when a human agent is replying.
+
+= The chat widget doesn't appear on my site. What should I check? =
+
+1. Make sure your website's domain is saved under **Settings → Custom Chat → Site domain** in your OmniConva dashboard. The widget only loads on that domain. `www.yourstore.com` and `yourstore.com` count as the same site, but any other subdomain, such as `shop.yourstore.com`, must be the one you enter.
+2. Make sure the Site Key under **Settings → OmniConva AI Sales Agent** matches the one in your OmniConva dashboard, and that you clicked **Save Changes**.
+3. If you use a caching or optimization plugin, clear its cache so the page includes the widget script.
 
 = Will the chat widget slow down my website? =
 
