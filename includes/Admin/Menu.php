@@ -120,10 +120,43 @@ class Menu {
 	 * @return array
 	 */
 	public function sanitize_settings( $settings ) {
+		$existing  = (array) get_option( self::OPTION_NAME, array() );
 		$sanitized = array();
 
-		$sanitized['site_key']        = isset( $settings['site_key'] ) ? sanitize_text_field( $settings['site_key'] ) : '';
-		$sanitized['identity_secret'] = isset( $settings['identity_secret'] ) ? sanitize_text_field( $settings['identity_secret'] ) : '';
+		// Both values are opaque tokens OmniConva generates: letters, digits,
+		// "_" and "-". Anything else (a pasted URL, stray punctuation) would be
+		// interpolated into the widget's request path, so it is refused here
+		// and the saved value kept.
+		$site_key = isset( $settings['site_key'] ) ? trim( sanitize_text_field( $settings['site_key'] ) ) : '';
+		if ( '' !== $site_key && ! preg_match( '/^[A-Za-z0-9_-]{8,128}$/', $site_key ) ) {
+			add_settings_error(
+				self::OPTION_NAME,
+				'omniconva_invalid_site_key',
+				__( 'The Site Key doesn\'t look right. Copy it from Settings → Custom Chat in your OmniConva dashboard.', 'omniconva-ai-sales-agent-connector' )
+			);
+			$site_key = isset( $existing['site_key'] ) ? $existing['site_key'] : '';
+		}
+		$sanitized['site_key'] = $site_key;
+
+		// The secret field is rendered empty and only overwrites the saved
+		// value when something is typed, so the secret never travels back to
+		// the browser on every settings page load.
+		$identity_secret = isset( $settings['identity_secret'] ) ? trim( sanitize_text_field( $settings['identity_secret'] ) ) : '';
+		if ( '' === $identity_secret ) {
+			$identity_secret = isset( $existing['identity_secret'] ) ? $existing['identity_secret'] : '';
+		} elseif ( ! preg_match( '/^[A-Za-z0-9_-]{16,256}$/', $identity_secret ) ) {
+			add_settings_error(
+				self::OPTION_NAME,
+				'omniconva_invalid_identity_secret',
+				__( 'The Identity Secret doesn\'t look right. Copy it from Settings → Custom Chat in your OmniConva dashboard.', 'omniconva-ai-sales-agent-connector' )
+			);
+			$identity_secret = isset( $existing['identity_secret'] ) ? $existing['identity_secret'] : '';
+		}
+		$sanitized['identity_secret'] = $identity_secret;
+		if ( ! empty( $settings['clear_identity_secret'] ) ) {
+			$sanitized['identity_secret'] = '';
+		}
+
 		$sanitized['show_powered_by'] = ! empty( $settings['show_powered_by'] );
 
 		return $sanitized;
@@ -158,19 +191,26 @@ class Menu {
 	 * @return void
 	 */
 	public function render_identity_secret_field() {
-		$settings        = get_option( self::OPTION_NAME );
-		$identity_secret = isset( $settings['identity_secret'] ) ? $settings['identity_secret'] : '';
+		$settings   = get_option( self::OPTION_NAME );
+		$has_secret = ! empty( $settings['identity_secret'] );
 		?>
 		<input
 			type="password"
 			id="omniconva_ai_sales_connector_identity_secret"
 			name="<?php echo esc_attr( self::OPTION_NAME ); ?>[identity_secret]"
-			value="<?php echo esc_attr( $identity_secret ); ?>"
+			value=""
+			placeholder="<?php echo $has_secret ? esc_attr__( '•••••••• (saved — leave blank to keep)', 'omniconva-ai-sales-agent-connector' ) : ''; ?>"
 			class="regular-text"
 			autocomplete="new-password"
 		/>
+		<?php if ( $has_secret ) : ?>
+			<label style="display:block;margin-top:6px">
+				<input type="checkbox" name="<?php echo esc_attr( self::OPTION_NAME ); ?>[clear_identity_secret]" value="1" />
+				<?php esc_html_e( 'Remove the saved Identity Secret', 'omniconva-ai-sales-agent-connector' ); ?>
+			</label>
+		<?php endif; ?>
 		<p class="description">
-			<?php esc_html_e( 'Used to sign logged-in customer identities (HMAC-SHA256). Keep this secret; it is never sent to the browser.', 'omniconva-ai-sales-agent-connector' ); ?>
+			<?php esc_html_e( 'Used to sign logged-in customer identities (HMAC-SHA256). Keep this secret; it is never sent to the browser, and it is not shown here again once saved.', 'omniconva-ai-sales-agent-connector' ); ?>
 		</p>
 		<?php
 	}

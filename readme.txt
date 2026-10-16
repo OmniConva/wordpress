@@ -72,8 +72,8 @@ This plugin connects your site to the **OmniConva AI Sales Agent** service. The 
 * Your Site Key, used to load your widget's settings.
 * Chat messages, attachments and voice messages that visitors send.
 * Contact details a visitor enters in the pre-chat form, such as name, email address and phone number.
-* Page and browser information: the current page URL and title, the referring page, recently viewed pages on your site, browser language and user agent.
-* For logged-in users, if you have set an Identity Secret: the user ID, display name, email address, avatar URL, WooCommerce billing phone and billing address, and a signature (HMAC hash) of the user ID. The Identity Secret itself is never sent.
+* Page and browser information: the current page URL and title, the referring page, recently viewed pages on your site (page addresses without their query strings), browser language, platform and user agent.
+* For logged-in users, if you have set an Identity Secret: the user ID, display name, email address, avatar URL, WooCommerce billing phone and the first line of the billing address, and a signature (HMAC hash) of the user ID. The Identity Secret itself is never sent.
 
 The widget also keeps a visitor ID, a session token and a short browsing history in the visitor's browser (localStorage) so conversations continue from one page to the next.
 
@@ -129,6 +129,10 @@ Yes. The AI sales agent can guide a shopper through choosing products and help t
 
 Yes. Your team can join any conversation from the OmniConva dashboard. The widget shows the visitor when a human agent is replying.
 
+= I use a page cache or CDN. Anything to know? =
+
+For logged-in users the plugin puts that user's name, email, phone and a signed identity into the page, so the chat recognizes them. WordPress and the common caching plugins skip logged-in users automatically. If you cache whole pages at the edge (for example Cloudflare "Cache Everything" or Varnish), make sure pages are not cached for logged-in users — otherwise one customer's details could be served to another visitor.
+
 = The chat widget doesn't appear on my site. What should I check? =
 
 1. Make sure your website's domain is saved under **Settings → Custom Chat → Site domain** in your OmniConva dashboard. The widget only loads on that domain. `www.yourstore.com` and `yourstore.com` count as the same site, but any other subdomain, such as `shop.yourstore.com`, must be the one you enter.
@@ -174,6 +178,9 @@ All conversations, captured leads, ratings and feedback appear in your OmniConva
 = 1.0.1 =
 * Security: the chat widget no longer lets a link inside a chat message add HTML attributes. Update as soon as possible.
 * Messages written by a human agent are shown as plain text.
+* The Site Key and Identity Secret are checked for the right shape when saved; an invalid value is refused and the saved one kept.
+* The Identity Secret is no longer shown in the settings form once saved; leave the field blank to keep it, or tick "Remove" to clear it.
+* The widget records page addresses without their query strings.
 
 = 1.0.0 =
 * Initial release.
