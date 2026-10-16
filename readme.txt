@@ -4,7 +4,7 @@ Tags: ai chatbot, live chat, woocommerce, chatbot, lead generation
 Requires at least: 4.5
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -171,6 +171,10 @@ All conversations, captured leads, ratings and feedback appear in your OmniConva
 
 == Changelog ==
 
+= 1.0.1 =
+* Security: the chat widget no longer lets a link inside a chat message add HTML attributes. Update as soon as possible.
+* Messages written by a human agent are shown as plain text.
+
 = 1.0.0 =
 * Initial release.
 * Settings page with Site Key and Identity Secret.
@@ -178,6 +182,9 @@ All conversations, captured leads, ratings and feedback appear in your OmniConva
 * Signed identity (HMAC-SHA256) for logged-in WordPress and WooCommerce customers.
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Security fix in the chat widget. Update as soon as possible.
 
 = 1.0.0 =
 Initial release of the OmniConva AI Sales Agent Connector.
