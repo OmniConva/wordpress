@@ -178,6 +178,9 @@ All conversations, captured leads, ratings and feedback appear in your OmniConva
 = 1.0.1 =
 * Security: the chat widget no longer lets a link inside a chat message add HTML attributes. Update as soon as possible.
 * Messages written by a human agent are shown as plain text.
+* The Site Key and Identity Secret are checked for the right shape when saved; an invalid value is refused and the saved one kept.
+* The Identity Secret is no longer shown in the settings form once saved; leave the field blank to keep it, or tick "Remove" to clear it.
+* The widget records page addresses without their query strings.
 
 = 1.0.0 =
 * Initial release.
