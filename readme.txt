@@ -4,7 +4,7 @@ Tags: ai chatbot, live chat, woocommerce, chatbot, lead generation
 Requires at least: 4.5
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -170,11 +170,17 @@ All conversations, captured leads, ratings and feedback appear in your OmniConva
 
 == Screenshots ==
 
-1. The plugin settings page: paste your Site Key and optional Identity Secret to connect your site to OmniConva.
+1. The plugin settings page: connect your site to OmniConva in one click, or enter your Site Key and optional Identity Secret by hand.
 2. The AI chat widget on the frontend, answering a shopper's questions in real time.
 3. The AI sales agent helping a customer place a WooCommerce order in the chat.
 
 == Changelog ==
+
+= 1.0.2 =
+* New: **Connect to OmniConva** button. Sign in or create a free account, approve your site, and the Site Key and Identity Secret are saved for you. No more copying and pasting.
+* Connecting also allows your site's domain in OmniConva, so the widget loads without any further setup.
+* The settings page shows which OmniConva store the site is connected to, with Reconnect and Disconnect buttons.
+* The Site Key and Identity Secret can still be entered by hand.
 
 = 1.0.1 =
 * Security: the chat widget no longer lets a link inside a chat message add HTML attributes. Update as soon as possible.
@@ -190,6 +196,9 @@ All conversations, captured leads, ratings and feedback appear in your OmniConva
 * Signed identity (HMAC-SHA256) for logged-in WordPress and WooCommerce customers.
 
 == Upgrade Notice ==
+
+= 1.0.2 =
+Connect your site to OmniConva in one click, without copying keys.
 
 = 1.0.1 =
 Security fix in the chat widget. Update as soon as possible.

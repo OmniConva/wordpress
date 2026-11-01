@@ -256,7 +256,7 @@ class Menu {
 	/**
 	 * Intro for the settings section: the keys can still be pasted by hand.
 	 *
-	 * @since 1.1.0
+	 * @since 1.0.2
 	 *
 	 * @return void
 	 */
@@ -271,7 +271,7 @@ class Menu {
 	/**
 	 * Show the notice a connect or disconnect redirected back with.
 	 *
-	 * @since 1.1.0
+	 * @since 1.0.2
 	 *
 	 * @return void
 	 */
@@ -294,7 +294,7 @@ class Menu {
 	 * The connection box: Connect when there is no Site Key, otherwise the
 	 * connected store with Reconnect and Disconnect.
 	 *
-	 * @since 1.1.0
+	 * @since 1.0.2
 	 *
 	 * @return void
 	 */

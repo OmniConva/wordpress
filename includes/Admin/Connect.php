@@ -32,7 +32,7 @@ class Connect {
 	 * Per-user transient holding the state and PKCE verifier between the
 	 * start and the callback.
 	 *
-	 * @since 1.1.0
+	 * @since 1.0.2
 	 *
 	 * @var string
 	 */
@@ -41,7 +41,7 @@ class Connect {
 	/**
 	 * How long a connect may take, matching the API's request lifetime.
 	 *
-	 * @since 1.1.0
+	 * @since 1.0.2
 	 *
 	 * @var int
 	 */
@@ -50,7 +50,7 @@ class Connect {
 	/**
 	 * Connect constructor.
 	 *
-	 * @since 1.1.0
+	 * @since 1.0.2
 	 *
 	 * @return void
 	 */
@@ -63,7 +63,7 @@ class Connect {
 	/**
 	 * Register a connect request and send the admin to the OmniConva dashboard.
 	 *
-	 * @since 1.1.0
+	 * @since 1.0.2
 	 *
 	 * @return void
 	 */
@@ -117,7 +117,7 @@ class Connect {
 	 * No nonce: this is a cross-site redirect. The state, kept per user, does
 	 * the same job, and the code is useless without the verifier.
 	 *
-	 * @since 1.1.0
+	 * @since 1.0.2
 	 *
 	 * @return void
 	 */
@@ -178,7 +178,7 @@ class Connect {
 	/**
 	 * Forget the keys: the widget stops loading until the site is connected again.
 	 *
-	 * @since 1.1.0
+	 * @since 1.0.2
 	 *
 	 * @return void
 	 */
@@ -197,7 +197,7 @@ class Connect {
 	/**
 	 * Messages for the ?omniconva_notice= the actions redirect back with.
 	 *
-	 * @since 1.1.0
+	 * @since 1.0.2
 	 *
 	 * @return array Notice code => array( type, message ).
 	 */
@@ -215,7 +215,7 @@ class Connect {
 	/**
 	 * Require a settings-capable admin and this action's nonce.
 	 *
-	 * @since 1.1.0
+	 * @since 1.0.2
 	 *
 	 * @param string $action Nonce action.
 	 *
@@ -231,7 +231,7 @@ class Connect {
 	/**
 	 * Decode a JSON response body, or an empty array on any failure.
 	 *
-	 * @since 1.1.0
+	 * @since 1.0.2
 	 *
 	 * @param array|\WP_Error $response wp_remote_post() result.
 	 *
@@ -252,7 +252,7 @@ class Connect {
 	/**
 	 * Redirect to the settings page with a notice, and stop.
 	 *
-	 * @since 1.1.0
+	 * @since 1.0.2
 	 *
 	 * @param string $notice Key of self::notices().
 	 *
@@ -274,7 +274,7 @@ class Connect {
 	/**
 	 * The OmniConva API base, the same one the widget uses.
 	 *
-	 * @since 1.1.0
+	 * @since 1.0.2
 	 *
 	 * @return string
 	 */
@@ -285,7 +285,7 @@ class Connect {
 	/**
 	 * Base64url without padding (RFC 7636).
 	 *
-	 * @since 1.1.0
+	 * @since 1.0.2
 	 *
 	 * @param string $bytes Raw bytes.
 	 *
