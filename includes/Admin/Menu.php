@@ -80,8 +80,8 @@ class Menu {
 
 		add_settings_section(
 			'omniconva_ai_sales_connector_general',
-			__( 'General Settings', 'omniconva-ai-sales-agent-connector' ),
-			'__return_false',
+			__( 'Settings', 'omniconva-ai-sales-agent-connector' ),
+			array( $this, 'render_general_section' ),
 			self::PAGE_SLUG
 		);
 
@@ -158,6 +158,17 @@ class Menu {
 		}
 
 		$sanitized['show_powered_by'] = ! empty( $settings['show_powered_by'] );
+
+		// The OmniConva store name, for the "Connected to …" line. Set by the
+		// Connect button; a Site Key changed by hand no longer matches it.
+		$store_name = isset( $settings['store_name'] )
+			? sanitize_text_field( $settings['store_name'] )
+			: ( isset( $existing['store_name'] ) ? $existing['store_name'] : '' );
+		$old_key    = isset( $existing['site_key'] ) ? $existing['site_key'] : '';
+		if ( ! isset( $settings['store_name'] ) && $sanitized['site_key'] !== $old_key ) {
+			$store_name = '';
+		}
+		$sanitized['store_name'] = '' === $sanitized['site_key'] ? '' : $store_name;
 
 		return $sanitized;
 	}
@@ -243,6 +254,98 @@ class Menu {
 	}
 
 	/**
+	 * Intro for the settings section: the keys can still be pasted by hand.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
+	public function render_general_section() {
+		?>
+		<p>
+			<?php esc_html_e( 'The Connect button above fills in the Site Key and Identity Secret for you. To set them up by hand instead, copy them from Settings → Custom Chat in your OmniConva dashboard.', 'omniconva-ai-sales-agent-connector' ); ?>
+		</p>
+		<?php
+	}
+
+	/**
+	 * Show the notice a connect or disconnect redirected back with.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
+	private function render_notice() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only.
+		$code    = isset( $_GET['omniconva_notice'] ) ? sanitize_key( wp_unslash( $_GET['omniconva_notice'] ) ) : '';
+		$notices = Connect::notices();
+		if ( ! isset( $notices[ $code ] ) ) {
+			return;
+		}
+		list( $type, $message ) = $notices[ $code ];
+		?>
+		<div class="notice notice-<?php echo esc_attr( $type ); ?> is-dismissible">
+			<p><?php echo esc_html( $message ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * The connection box: Connect when there is no Site Key, otherwise the
+	 * connected store with Reconnect and Disconnect.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
+	private function render_connection() {
+		$settings   = (array) get_option( self::OPTION_NAME, array() );
+		$connected  = ! empty( $settings['site_key'] );
+		$store_name = isset( $settings['store_name'] ) ? $settings['store_name'] : '';
+		$action_url = admin_url( 'admin-post.php' );
+		?>
+		<div class="card" style="max-width:640px">
+			<?php if ( $connected ) : ?>
+				<h2 class="title"><?php esc_html_e( 'Connected to OmniConva', 'omniconva-ai-sales-agent-connector' ); ?></h2>
+				<p>
+					<?php
+					if ( '' !== $store_name ) {
+						/* translators: %s: OmniConva store name. */
+						echo esc_html( sprintf( __( 'The chat widget on this site uses the store "%s".', 'omniconva-ai-sales-agent-connector' ), $store_name ) );
+					} else {
+						esc_html_e( 'The chat widget is live on this site.', 'omniconva-ai-sales-agent-connector' );
+					}
+					?>
+				</p>
+				<p>
+					<form action="<?php echo esc_url( $action_url ); ?>" method="post" style="display:inline">
+						<input type="hidden" name="action" value="omniconva_connect_start" />
+						<?php wp_nonce_field( 'omniconva_connect_start' ); ?>
+						<?php submit_button( __( 'Reconnect', 'omniconva-ai-sales-agent-connector' ), 'secondary', 'submit', false ); ?>
+					</form>
+					<form action="<?php echo esc_url( $action_url ); ?>" method="post" style="display:inline">
+						<input type="hidden" name="action" value="omniconva_disconnect" />
+						<?php wp_nonce_field( 'omniconva_disconnect' ); ?>
+						<?php submit_button( __( 'Disconnect', 'omniconva-ai-sales-agent-connector' ), 'delete', 'submit', false ); ?>
+					</form>
+				</p>
+			<?php else : ?>
+				<h2 class="title"><?php esc_html_e( 'Connect your site', 'omniconva-ai-sales-agent-connector' ); ?></h2>
+				<p><?php esc_html_e( 'Sign in to OmniConva and approve this site. Your keys are filled in automatically.', 'omniconva-ai-sales-agent-connector' ); ?></p>
+				<form action="<?php echo esc_url( $action_url ); ?>" method="post">
+					<input type="hidden" name="action" value="omniconva_connect_start" />
+					<?php wp_nonce_field( 'omniconva_connect_start' ); ?>
+					<?php submit_button( __( 'Connect to OmniConva', 'omniconva-ai-sales-agent-connector' ), 'primary', 'submit', false ); ?>
+				</form>
+				<p class="description">
+					<?php esc_html_e( 'Don\'t have an account? You can create one for free while connecting.', 'omniconva-ai-sales-agent-connector' ); ?>
+				</p>
+			<?php endif; ?>
+		</div>
+		<?php
+	}
+
+	/**
 	 * Add a "Settings" link to the plugin's row on the Plugins screen.
 	 *
 	 * @since 1.0.0
@@ -300,6 +403,10 @@ class Menu {
 		?>
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+			<?php
+			$this->render_notice();
+			$this->render_connection();
+			?>
 			<form action="options.php" method="post">
 				<?php
 				settings_fields( self::OPTION_NAME );

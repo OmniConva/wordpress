@@ -27,6 +27,7 @@ class Admin {
     public function __construct() {
         $this->dispatch_actions();
         new Admin\Menu();
+        new Admin\Connect();
     }
 
     /**

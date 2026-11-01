@@ -30,6 +30,18 @@ Then activate **OmniConva AI Sales Agent Connector** from the Plugins screen.
 
 ## Configuration
 
+### Connect button
+
+**Connect to OmniConva** fills the keys in without copying them. It is an authorization-code grant with PKCE (`includes/Admin/Connect.php`, API side in `api/src/wordpress-connect/`):
+
+1. `admin-post.php?action=omniconva_connect_start` (nonce, `manage_options`) makes a verifier and state, keeps them in a per-user transient for 30 minutes, `POST`s `{siteUrl, returnUrl, state, codeChallenge, siteName}` to `{apiBase}/wordpress/connect/requests`, and redirects to the `connectUrl` it gets back (the dashboard's `/connect/wordpress?req=…`).
+2. The admin signs in or signs up there and a store **owner** approves. The dashboard redirects to `admin-post.php?action=omniconva_connect_callback&code=…&state=…` (or `error=access_denied`).
+3. The callback checks the state, then `POST`s `{code, codeVerifier}` to `{apiBase}/wordpress/connect/exchange` and saves the returned `siteKey`, `identitySecret` and `storeName`. The exchange also adds the site's hostname to the store's allowed widget domains, so no domain has to be typed in the dashboard.
+
+Disconnect (`omniconva_disconnect`) only clears the local keys. The result comes back as `?omniconva_notice=` on the settings page.
+
+### Manual setup
+
 The widget only loads on the domain saved for the store in the OmniConva dashboard (**Settings → Custom Chat → Site domain**). The API refuses its CORS requests from any other origin, so a site with the right Site Key but no domain set shows nothing. `www.` is folded; other subdomains have to match.
 
 Then go to **Settings → OmniConva AI Sales Agent**, or use the Settings link on the plugin's row on the Plugins screen:
@@ -37,8 +49,9 @@ Then go to **Settings → OmniConva AI Sales Agent**, or use the Settings link o
 - **Site Key** (`site_key`): the store's widget key from the dashboard. While it is empty, nothing loads on the frontend.
 - **Identity Secret** (`identity_secret`): optional. When set, a logged-in user is passed to the widget as `customer` (ID, display name, email, avatar, WooCommerce billing phone and address) with `hash = hash_hmac('sha256', user ID, secret)`. The secret itself never reaches the browser.
 - **Credit link** (`show_powered_by`): optional, off by default.
+- **Store name** (`store_name`): set by the Connect button for the "Connected to …" line; cleared when the Site Key changes by hand.
 
-All three live in the `omniconva_ai_sales_connector_settings` option. Once a key is set, the plugin enqueues `assets/js/widget.min.js` in the footer and prints a config object ahead of it:
+All of these live in the `omniconva_ai_sales_connector_settings` option. Once a key is set, the plugin enqueues `assets/js/widget.min.js` in the footer and prints a config object ahead of it:
 
 ```js
 window.OmniConvaChat = { siteKey: '…', apiBase: 'https://api.omniconva.com', showPoweredBy: false };
@@ -63,8 +76,9 @@ Classes are PSR-4 autoloaded from `includes/` under the `OmniConva\AiSalesAgentC
 | Path | Responsibility |
 | --- | --- |
 | `omniconva-ai-sales-agent-connector.php` | Bootstrap, constants, lifecycle hooks, container |
-| `includes/Admin.php` | Admin entry point, instantiates the menu |
+| `includes/Admin.php` | Admin entry point, instantiates the menu and the connect handlers |
 | `includes/Admin/Menu.php` | Settings page, Settings API registration, sanitization, Settings link |
+| `includes/Admin/Connect.php` | Connect / Disconnect buttons: the PKCE handshake with the OmniConva API |
 | `includes/Api.php` | REST registration point (no routes yet) |
 | `includes/Assets.php` | Widget enqueue, config object, signed customer identity |
 | `includes/Installer.php` | Activation version tracking |
