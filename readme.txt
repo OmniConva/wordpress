@@ -56,7 +56,7 @@ Customer identity is signed on your server with HMAC-SHA256 using your private I
 1. Install this plugin and open **Settings → OmniConva AI Sales Agent**.
 2. Click **Connect to OmniConva**. Sign in, or create a free OmniConva account, and approve your site.
 3. You are sent back to WordPress with your Site Key and Identity Secret saved, and your site's domain allowed in OmniConva.
-4. The AI chat widget now appears on your site. Set up its knowledge, tone, products and branding in your OmniConva dashboard.
+4. The AI chat widget now appears on your site. Change the agent's name, status line, avatar shape, colors and greeting right on the same settings page, and set up its knowledge, tone and products in your OmniConva dashboard.
 
 You manage the AI agent's training, conversations, leads, human handoff and analytics in the OmniConva dashboard.
 
@@ -64,9 +64,11 @@ You manage the AI agent's training, conversations, leads, human handoff and anal
 
 This plugin connects your site to the **OmniConva AI Sales Agent** service. The service runs the AI chatbot and stores conversations. The plugin cannot do anything without the service, and you need an OmniConva account and Site Key to use it.
 
-**When data is sent:** on the public side of your site, only after you have saved a Site Key. From your WordPress admin, only when an administrator clicks **Connect to OmniConva** or **Reconnect**.
+**When data is sent:** on the public side of your site, only after you have saved a Site Key. From your WordPress admin, only when an administrator clicks **Connect to OmniConva** or **Reconnect**, opens the plugin's settings page while connected (to load the chat widget settings), or saves the chat widget settings there.
 
 **What the Connect button sends:** your site's address, its name (the Site Title), the admin address OmniConva sends you back to, and two random one-time values used to secure the connection. Your server then receives the Site Key and Identity Secret directly from OmniConva. No WordPress user data is sent.
+
+**What the chat widget settings send:** your Site Key, a timestamp and a signature (HMAC hash) of the request made with your Identity Secret, and, when you save, the agent name, status text, avatar shape, colors and greeting message you entered. The Identity Secret itself is never sent. No WordPress user data is sent.
 
 **What data is sent:**
 
@@ -142,7 +144,7 @@ For logged-in users the plugin puts that user's name, email, phone and a signed 
 
 = Will the chat widget slow down my website? =
 
-No. The plugin loads one script in the footer, and only after a Site Key is saved. It adds no database tables and loads nothing on your admin screens.
+No. The plugin loads one script in the footer, and only after a Site Key is saved. It adds no database tables and loads nothing on your admin screens apart from a few styles on its own settings page.
 
 = Does it work with my theme or page builder? =
 
@@ -163,6 +165,10 @@ Yes. Visitors can attach photos, videos and files, or record a voice message in 
 = Does the widget add a link to OmniConva on my site? =
 
 Only if you want it to. A "Powered by OmniConva" link in the chat widget is off by default. You can turn it on under **Settings → OmniConva AI Sales Agent → Credit link**.
+
+= Can I change how the chat widget looks? =
+
+Yes. Under **Settings → OmniConva AI Sales Agent → Chat widget** you can set the agent name, the status line under it, the avatar shape, the header and text colors, and the greeting message. The settings are saved in OmniConva, so they match the Custom Chat settings in your OmniConva dashboard. Editing them from WordPress needs the Identity Secret, which the Connect button saves for you.
 
 = Where do I see conversations and leads? =
 

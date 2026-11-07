@@ -28,6 +28,7 @@ class Admin {
         $this->dispatch_actions();
         new Admin\Menu();
         new Admin\Connect();
+        new Admin\Appearance();
     }
 
     /**

@@ -278,7 +278,7 @@ class Menu {
 	private function render_notice() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only.
 		$code    = isset( $_GET['omniconva_notice'] ) ? sanitize_key( wp_unslash( $_GET['omniconva_notice'] ) ) : '';
-		$notices = Connect::notices();
+		$notices = array_merge( Connect::notices(), Appearance::notices() );
 		if ( ! isset( $notices[ $code ] ) ) {
 			return;
 		}
@@ -414,6 +414,16 @@ class Menu {
 				submit_button();
 				?>
 			</form>
+			<?php
+			/**
+			 * Fires at the end of the settings page, outside the keys form.
+			 *
+			 * The chat widget's appearance section renders here.
+			 *
+			 * @since 1.1.0
+			 */
+			do_action( 'omniconva_ai_sales_connector_settings_page_after' );
+			?>
 		</div>
 		<?php
 	}

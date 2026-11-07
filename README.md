@@ -40,6 +40,15 @@ Then activate **OmniConva AI Sales Agent Connector** from the Plugins screen.
 
 Disconnect (`omniconva_disconnect`) only clears the local keys. The result comes back as `?omniconva_notice=` on the settings page.
 
+### Chat widget settings
+
+Once connected, the settings page also edits the widget's look: agent name, status text, avatar shape (`circle`/`square`), header color, text color and greeting (`includes/Admin/Appearance.php`, API side in `api/src/wordpress-connect/wordpress-widget-settings.*`). Nothing is stored in WordPress. These are the store's `store_widget_settings` in OmniConva, the same values the dashboard's **Custom Chat** tab and the mobile app edit, and what the widget fetches from `/api/widget/config/`.
+
+- Opening the page `GET`s `{apiBase}/wordpress/widget-settings`. Saving (`admin-post.php?action=omniconva_save_appearance`, nonce, `manage_options`) `PATCH`es the same URL with `{agentName, statusText, avatarShape, primaryColor, primaryTextColor, greetingMessage}`. An empty `statusText` clears it, and the widget then shows "We reply right away".
+- Each request carries `X-OmniConva-Site-Key`, `X-OmniConva-Timestamp` (Unix seconds) and `X-OmniConva-Signature`: `hash_hmac('sha256', "omniconva-wp-v1\n{timestamp}\n{METHOD}\n/wordpress/widget-settings\n{body}", identity_secret)` over the exact body bytes (empty for the `GET`). The API allows 5 minutes of clock skew and accepts each write signature once.
+- The section needs both keys. Without an Identity Secret it says to Reconnect. A `401` (usually a rotated secret) says the same.
+- Embed domains and the pre-chat form can't be changed this way. They stay dashboard-only.
+
 ### Manual setup
 
 The widget only loads on the domain saved for the store in the OmniConva dashboard (**Settings → Custom Chat → Site domain**). The API refuses its CORS requests from any other origin, so a site with the right Site Key but no domain set shows nothing. `www.` is folded; other subdomains have to match.
@@ -79,6 +88,7 @@ Classes are PSR-4 autoloaded from `includes/` under the `OmniConva\AiSalesAgentC
 | `includes/Admin.php` | Admin entry point, instantiates the menu and the connect handlers |
 | `includes/Admin/Menu.php` | Settings page, Settings API registration, sanitization, Settings link |
 | `includes/Admin/Connect.php` | Connect / Disconnect buttons: the PKCE handshake with the OmniConva API |
+| `includes/Admin/Appearance.php` | Chat widget settings section, read from and saved to the OmniConva API with signed requests |
 | `includes/Api.php` | REST registration point (no routes yet) |
 | `includes/Assets.php` | Widget enqueue, config object, signed customer identity |
 | `includes/Installer.php` | Activation version tracking |

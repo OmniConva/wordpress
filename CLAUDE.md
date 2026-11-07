@@ -22,6 +22,7 @@ There is no JS build here. `assets/js/widget.min.js` is built in the `web-chat-w
 - `omniconva-ai-sales-agent-connector.php`: singleton bootstrap. Requires `vendor/autoload.php` (PSR-4, `OmniConva\AiSalesAgentConnector\` → `includes/`), defines `OMNICONVA_AI_SALES_CONNECTOR_*` constants, runs `Installer` on activation, instantiates `Admin` on admin requests (`plugins_loaded`) and `Api` + `Assets` on `init`. Instances live in `$this->container`, exposed via `__get`.
 - `includes/Admin/Menu.php`: the Settings → OmniConva AI Sales Agent page (Settings API, option `omniconva_ai_sales_connector_settings`, sanitization, plugin-row Settings link).
 - `includes/Admin/Connect.php`: the Connect to OmniConva button (`admin-post.php` actions). Authorization code + PKCE against the API's `/wordpress/connect/*` routes; saves the keys into the same option. README.md → Connect button.
+- `includes/Admin/Appearance.php`: the Chat widget section (agent name, status text, avatar shape, colors, greeting). Reads and writes the store's settings in OmniConva via `/wordpress/widget-settings`, signed with the Identity Secret, and stores nothing locally. README.md → Chat widget settings.
 - `includes/Assets.php`: enqueues the widget only on the frontend and only with a Site Key, prints `window.OmniConvaChat`, and signs the logged-in user (`hash_hmac('sha256', user ID, identity_secret)`).
 - `includes/Installer.php`: version/installed options. `uninstall.php` deletes all options.
 
