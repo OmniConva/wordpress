@@ -4,7 +4,7 @@ Tags: ai chatbot, live chat, woocommerce, chatbot, lead generation
 Requires at least: 4.5
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 1.0.2
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -182,13 +182,14 @@ All conversations, captured leads, ratings and feedback appear in your OmniConva
 
 == Changelog ==
 
-= 1.0.2 =
+= 1.1.0 =
 * New: **Connect to OmniConva** button. Sign in or create a free account, approve your site, and the Site Key and Identity Secret are saved for you. No more copying and pasting.
 * Connecting also allows your site's domain in OmniConva, so the widget loads without any further setup.
-* The settings page shows which OmniConva store the site is connected to, with Reconnect and Disconnect buttons.
-* The Site Key and Identity Secret can still be entered by hand.
-
-= 1.0.1 =
+* The settings page shows which OmniConva store the site is connected to, with Reconnect and Disconnect buttons. The Site Key and Identity Secret can still be entered by hand.
+* New: **Chat widget** settings on the plugin's settings page. Change the agent name, the status line under it, the avatar shape (rounded or square), the header and text colors, and the greeting message without leaving WordPress.
+* The chat widget settings are saved in OmniConva, so they always match the Custom Chat settings in your OmniConva dashboard and app. Editing them needs the Identity Secret, which the Connect button saves for you.
+* The chat widget now shows your status text under the agent name, instead of always saying "We reply right away".
+* Web addresses in chat messages are now clickable links.
 * Security: the chat widget no longer lets a link inside a chat message add HTML attributes. Update as soon as possible.
 * Messages written by a human agent are shown as plain text.
 * The Site Key and Identity Secret are checked for the right shape when saved; an invalid value is refused and the saved one kept.
@@ -203,11 +204,8 @@ All conversations, captured leads, ratings and feedback appear in your OmniConva
 
 == Upgrade Notice ==
 
-= 1.0.2 =
-Connect your site to OmniConva in one click, without copying keys.
-
-= 1.0.1 =
-Security fix in the chat widget. Update as soon as possible.
+= 1.1.0 =
+Security fix in the chat widget, one-click Connect to OmniConva, and chat widget settings (agent name, colors, greeting) right in WordPress. Update as soon as possible.
 
 = 1.0.0 =
 Initial release of the OmniConva AI Sales Agent Connector.
