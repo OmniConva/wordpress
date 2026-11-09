@@ -55,13 +55,25 @@ class Menu {
 	 * @return void
 	 */
 	public function admin_menu() {
-		add_options_page(
+		add_menu_page(
 			__( 'OmniConva AI Sales Agent Connector', 'omniconva-ai-sales-agent-connector' ),
 			__( 'OmniConva AI Sales Agent', 'omniconva-ai-sales-agent-connector' ),
 			'manage_options',
 			self::PAGE_SLUG,
-			array( $this, 'plugin_page' )
+			array( $this, 'plugin_page' ),
+			'dashicons-format-chat'
 		);
+	}
+
+	/**
+	 * URL of the plugin's admin page.
+	 *
+	 * @since 1.1.1
+	 *
+	 * @return string
+	 */
+	public static function page_url() {
+		return admin_url( 'admin.php?page=' . self::PAGE_SLUG );
 	}
 
 	/**
@@ -357,7 +369,7 @@ class Menu {
 	public function plugin_action_links( $links ) {
 		$settings_link = sprintf(
 			'<a href="%s">%s</a>',
-			esc_url( admin_url( 'options-general.php?page=' . self::PAGE_SLUG ) ),
+			esc_url( self::page_url() ),
 			__( 'Settings', 'omniconva-ai-sales-agent-connector' )
 		);
 
@@ -404,6 +416,8 @@ class Menu {
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 			<?php
+			// WordPress only prints these by itself on pages under Settings.
+			settings_errors();
 			$this->render_notice();
 			$this->render_connection();
 			?>

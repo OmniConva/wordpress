@@ -53,7 +53,7 @@ Once connected, the settings page also edits the widget's look: agent name, stat
 
 The widget only loads on the domain saved for the store in the OmniConva dashboard (**Settings → Custom Chat → Site domain**). The API refuses its CORS requests from any other origin, so a site with the right Site Key but no domain set shows nothing. `www.` is folded; other subdomains have to match.
 
-Then go to **Settings → OmniConva AI Sales Agent**, or use the Settings link on the plugin's row on the Plugins screen:
+Then go to **OmniConva AI Sales Agent**, or use the Settings link on the plugin's row on the Plugins screen:
 
 - **Site Key** (`site_key`): the store's widget key from the dashboard. While it is empty, nothing loads on the frontend.
 - **Identity Secret** (`identity_secret`): optional. When set, a logged-in user is passed to the widget as `customer` (ID, display name, email, avatar, WooCommerce billing phone and address) with `hash = hash_hmac('sha256', user ID, secret)`. The secret itself never reaches the browser.

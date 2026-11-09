@@ -259,15 +259,7 @@ class Connect {
 	 * @return void
 	 */
 	private function back_to_settings( $notice ) {
-		wp_safe_redirect(
-			add_query_arg(
-				array(
-					'page'             => Menu::PAGE_SLUG,
-					'omniconva_notice' => $notice,
-				),
-				admin_url( 'options-general.php' )
-			)
-		);
+		wp_safe_redirect( add_query_arg( 'omniconva_notice', $notice, Menu::page_url() ) );
 		exit;
 	}
 

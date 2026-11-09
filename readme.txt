@@ -4,7 +4,7 @@ Tags: ai chatbot, live chat, woocommerce, chatbot, lead generation
 Requires at least: 4.5
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,7 +53,7 @@ Customer identity is signed on your server with HMAC-SHA256 using your private I
 
 = How it works =
 
-1. Install this plugin and open **Settings → OmniConva AI Sales Agent**.
+1. Install this plugin and open **OmniConva AI Sales Agent**.
 2. Click **Connect to OmniConva**. Sign in, or create a free OmniConva account, and approve your site.
 3. You are sent back to WordPress with your Site Key and Identity Secret saved, and your site's domain allowed in OmniConva.
 4. The AI chat widget now appears on your site. Change the agent's name, status line, avatar shape, colors and greeting right on the same settings page, and set up its knowledge, tone and products in your OmniConva dashboard.
@@ -107,7 +107,7 @@ Please mention this service in your site's privacy policy.
 
 = Setup =
 
-1. In WordPress, go to **Settings → OmniConva AI Sales Agent**, or click **Settings** on the plugin's row on the Plugins screen.
+1. In WordPress, go to **OmniConva AI Sales Agent**, or click **Settings** on the plugin's row on the Plugins screen.
 2. Click **Connect to OmniConva**, sign in or create an account, and approve. Only the OmniConva store owner can approve.
 3. Optional: tick **Credit link** to show a "Powered by OmniConva" link in the widget, and click **Save Changes**. It is off by default.
 4. Visit your site to see the AI chat widget.
@@ -139,7 +139,7 @@ For logged-in users the plugin puts that user's name, email, phone and a signed 
 = The chat widget doesn't appear on my site. What should I check? =
 
 1. Make sure your website's domain is saved under **Settings → Custom Chat → Site domain** in your OmniConva dashboard. The widget only loads on that domain. `www.yourstore.com` and `yourstore.com` count as the same site, but any other subdomain, such as `shop.yourstore.com`, must be the one you enter.
-2. Make sure the Site Key under **Settings → OmniConva AI Sales Agent** matches the one in your OmniConva dashboard, and that you clicked **Save Changes**.
+2. Make sure the Site Key under **OmniConva AI Sales Agent** matches the one in your OmniConva dashboard, and that you clicked **Save Changes**.
 3. If you use a caching or optimization plugin, clear its cache so the page includes the widget script.
 
 = Will the chat widget slow down my website? =
@@ -164,11 +164,11 @@ Yes. Visitors can attach photos, videos and files, or record a voice message in 
 
 = Does the widget add a link to OmniConva on my site? =
 
-Only if you want it to. A "Powered by OmniConva" link in the chat widget is off by default. You can turn it on under **Settings → OmniConva AI Sales Agent → Credit link**.
+Only if you want it to. A "Powered by OmniConva" link in the chat widget is off by default. You can turn it on under **OmniConva AI Sales Agent → Credit link**.
 
 = Can I change how the chat widget looks? =
 
-Yes. Under **Settings → OmniConva AI Sales Agent → Chat widget** you can set the agent name, the status line under it, the avatar shape, the header and text colors, and the greeting message. The settings are saved in OmniConva, so they match the Custom Chat settings in your OmniConva dashboard. Editing them from WordPress needs the Identity Secret, which the Connect button saves for you.
+Yes. Under **OmniConva AI Sales Agent → Chat widget** you can set the agent name, the status line under it, the avatar shape, the header and text colors, and the greeting message. The settings are saved in OmniConva, so they match the Custom Chat settings in your OmniConva dashboard. Editing them from WordPress needs the Identity Secret, which the Connect button saves for you.
 
 = Where do I see conversations and leads? =
 
@@ -181,6 +181,9 @@ All conversations, captured leads, ratings and feedback appear in your OmniConva
 3. The AI sales agent helping a customer place a WooCommerce order in the chat.
 
 == Changelog ==
+
+= 1.1.1 =
+* The plugin now has its own **OmniConva AI Sales Agent** item in the main WordPress admin menu, instead of being under Settings.
 
 = 1.1.0 =
 * New: **Connect to OmniConva** button. Sign in or create a free account, approve your site, and the Site Key and Identity Secret are saved for you. No more copying and pasting.
@@ -203,6 +206,9 @@ All conversations, captured leads, ratings and feedback appear in your OmniConva
 * Signed identity (HMAC-SHA256) for logged-in WordPress and WooCommerce customers.
 
 == Upgrade Notice ==
+
+= 1.1.1 =
+OmniConva AI Sales Agent moves from Settings to its own item in the main WordPress admin menu.
 
 = 1.1.0 =
 Security fix in the chat widget, one-click Connect to OmniConva, and chat widget settings (agent name, colors, greeting) right in WordPress. Update as soon as possible.

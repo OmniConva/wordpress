@@ -93,7 +93,7 @@ class Appearance {
 	 * @return void
 	 */
 	public function enqueue_styles( $hook_suffix ) {
-		if ( 'settings_page_' . Menu::PAGE_SLUG !== $hook_suffix ) {
+		if ( 'toplevel_page_' . Menu::PAGE_SLUG !== $hook_suffix ) {
 			return;
 		}
 		wp_register_style( 'omniconva-ai-sales-agent-connector-admin', false, array(), OMNICONVA_AI_SALES_CONNECTOR_VERSION );
@@ -247,7 +247,7 @@ class Appearance {
 
 			<p class="submit">
 				<?php submit_button( __( 'Save changes', 'omniconva-ai-sales-agent-connector' ), 'primary', 'submit', false ); ?>
-				<a class="button" href="<?php echo esc_url( admin_url( 'options-general.php?page=' . Menu::PAGE_SLUG ) ); ?>"><?php esc_html_e( 'Cancel', 'omniconva-ai-sales-agent-connector' ); ?></a>
+				<a class="button" href="<?php echo esc_url( Menu::page_url() ); ?>"><?php esc_html_e( 'Cancel', 'omniconva-ai-sales-agent-connector' ); ?></a>
 			</p>
 		</form>
 		<?php
@@ -469,15 +469,7 @@ class Appearance {
 	 * @return void
 	 */
 	private function back( $notice ) {
-		wp_safe_redirect(
-			add_query_arg(
-				array(
-					'page'             => Menu::PAGE_SLUG,
-					'omniconva_notice' => $notice,
-				),
-				admin_url( 'options-general.php' )
-			)
-		);
+		wp_safe_redirect( add_query_arg( 'omniconva_notice', $notice, Menu::page_url() ) );
 		exit;
 	}
 
