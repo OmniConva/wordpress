@@ -4,7 +4,7 @@ Tags: ai chatbot, live chat, woocommerce, chatbot, lead generation
 Requires at least: 4.5
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,7 +66,9 @@ This plugin connects your site to the **OmniConva AI Sales Agent** service. The 
 
 **When data is sent:** on the public side of your site, only after you have saved a Site Key. From your WordPress admin, only when an administrator clicks **Connect to OmniConva** or **Reconnect**, opens the plugin's settings page while connected (to load the chat widget settings), or saves the chat widget settings there.
 
-**What the Connect button sends:** your site's address, its name (the Site Title), the admin address OmniConva sends you back to, and two random one-time values used to secure the connection. Your server then receives the Site Key and Identity Secret directly from OmniConva. No WordPress user data is sent.
+**What the Connect button sends:** your site's address, its name (the Site Title), the admin address OmniConva sends you back to, and two random one-time values used to secure the connection. If you tick **Also sync WooCommerce products and orders**, it also sends that choice and the admin address WooCommerce returns you to. Your server then receives the Site Key and Identity Secret directly from OmniConva. No WordPress user data is sent.
+
+**WooCommerce sync (optional):** if you tick **Also sync WooCommerce products and orders**, after you approve in OmniConva you are sent to WooCommerce's own approval screen on your site. Nothing is shared unless you approve there. If you do, WooCommerce creates an API key with read and write access and sends it to OmniConva. This plugin never sees or stores that key. OmniConva then uses the WooCommerce REST API to import your products and store settings, register webhooks so that product changes are sent to it, and create the orders customers place in chat. You can revoke the key at any time under WooCommerce → Settings → Advanced → REST API.
 
 **What the chat widget settings send:** your Site Key, a timestamp and a signature (HMAC hash) of the request made with your Identity Secret, and, when you save, the agent name, status text, avatar shape, colors and greeting message you entered. The Identity Secret itself is never sent. No WordPress user data is sent.
 
@@ -182,6 +184,10 @@ All conversations, captured leads, ratings and feedback appear in your OmniConva
 
 == Changelog ==
 
+= 1.2.0 =
+* New: on WooCommerce stores, **Connect to OmniConva** and **Reconnect** can also sync your products and orders. Leave **Also sync WooCommerce products and orders** ticked, and after you approve in OmniConva you go straight to WooCommerce's own approval screen. There's no need to connect WooCommerce again from the OmniConva dashboard.
+* A store that already syncs products from this site keeps that connection, and one that syncs from another site or platform is never switched over.
+
 = 1.1.1 =
 * The plugin now has its own **OmniConva AI Sales Agent** item in the main WordPress admin menu, instead of being under Settings.
 
@@ -206,6 +212,9 @@ All conversations, captured leads, ratings and feedback appear in your OmniConva
 * Signed identity (HMAC-SHA256) for logged-in WordPress and WooCommerce customers.
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+Connect to OmniConva can now also sync your WooCommerce products and orders in the same step.
 
 = 1.1.1 =
 OmniConva AI Sales Agent moves from Settings to its own item in the main WordPress admin menu.
