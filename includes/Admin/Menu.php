@@ -68,7 +68,7 @@ class Menu {
 	/**
 	 * URL of the plugin's admin page.
 	 *
-	 * @since 1.1.1
+	 * @since 1.2.0
 	 *
 	 * @return string
 	 */

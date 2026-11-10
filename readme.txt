@@ -187,8 +187,6 @@ All conversations, captured leads, ratings and feedback appear in your OmniConva
 = 1.2.0 =
 * New: on WooCommerce stores, **Connect to OmniConva** and **Reconnect** can also sync your products and orders. Leave **Also sync WooCommerce products and orders** ticked, and after you approve in OmniConva you go straight to WooCommerce's own approval screen. There's no need to connect WooCommerce again from the OmniConva dashboard.
 * A store that already syncs products from this site keeps that connection, and one that syncs from another site or platform is never switched over.
-
-= 1.1.1 =
 * The plugin now has its own **OmniConva AI Sales Agent** item in the main WordPress admin menu, instead of being under Settings.
 
 = 1.1.0 =
@@ -214,10 +212,7 @@ All conversations, captured leads, ratings and feedback appear in your OmniConva
 == Upgrade Notice ==
 
 = 1.2.0 =
-Connect to OmniConva can now also sync your WooCommerce products and orders in the same step.
-
-= 1.1.1 =
-OmniConva AI Sales Agent moves from Settings to its own item in the main WordPress admin menu.
+Connect to OmniConva can now also sync your WooCommerce products and orders in the same step, and OmniConva AI Sales Agent moves from Settings to its own item in the main WordPress admin menu.
 
 = 1.1.0 =
 Security fix in the chat widget, one-click Connect to OmniConva, and chat widget settings (agent name, colors, greeting) right in WordPress. Update as soon as possible.
