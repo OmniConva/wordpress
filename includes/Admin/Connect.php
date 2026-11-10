@@ -26,6 +26,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  *    server checks the state and trades the code plus the PKCE verifier for
  *    the keys. The Identity Secret only ever travels in that server-to-server
  *    response, never through the browser.
+ * 3. Optionally, WooCommerce: when the admin ticked "Also sync products and
+ *    orders", the exchange also returns this site's WooCommerce approval
+ *    screen (/wc-auth/v1/authorize), and the admin is sent on to it. That
+ *    screen is WooCommerce's own: it creates the API key and posts it to
+ *    OmniConva, then returns here with ?success=1 or 0. This plugin never
+ *    sees or stores that key.
  */
 class Connect {
 	/**
@@ -46,6 +52,25 @@ class Connect {
 	 * @var int
 	 */
 	const TRANSIENT_TTL = 1800;
+
+	/**
+	 * The connect form's "Also sync products and orders" checkbox.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @var string
+	 */
+	const WOO_FIELD = 'omniconva_link_woocommerce';
+
+	/**
+	 * The notice WooCommerce's approval screen returns to; its ?success=
+	 * picks the message.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @var string
+	 */
+	const WOO_RETURN_NOTICE = 'woo_return';
 
 	/**
 	 * Connect constructor.
@@ -72,21 +97,27 @@ class Connect {
 
 		$verifier = $this->base64url( random_bytes( 32 ) );
 		$state    = $this->base64url( random_bytes( 24 ) );
+		// The nonce was checked by authorize() above.
+		$woo = self::woo_available() && ! empty( $_POST[ self::WOO_FIELD ] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+
+		$request = array(
+			'siteUrl'       => home_url( '/' ),
+			'returnUrl'     => admin_url( 'admin-post.php?action=omniconva_connect_callback' ),
+			'state'         => $state,
+			'codeChallenge' => $this->base64url( hash( 'sha256', $verifier, true ) ),
+			'siteName'      => wp_strip_all_tags( get_bloginfo( 'name' ) ),
+		);
+		if ( $woo ) {
+			$request['woocommerce']  = true;
+			$request['wooReturnUrl'] = add_query_arg( 'omniconva_notice', self::WOO_RETURN_NOTICE, Menu::page_url() );
+		}
 
 		$response = wp_remote_post(
 			$this->api_base() . '/wordpress/connect/requests',
 			array(
 				'timeout' => 15,
 				'headers' => array( 'Content-Type' => 'application/json' ),
-				'body'    => wp_json_encode(
-					array(
-						'siteUrl'       => home_url( '/' ),
-						'returnUrl'     => admin_url( 'admin-post.php?action=omniconva_connect_callback' ),
-						'state'         => $state,
-						'codeChallenge' => $this->base64url( hash( 'sha256', $verifier, true ) ),
-						'siteName'      => wp_strip_all_tags( get_bloginfo( 'name' ) ),
-					)
-				),
+				'body'    => wp_json_encode( $request ),
 			)
 		);
 
@@ -99,8 +130,9 @@ class Connect {
 		set_transient(
 			self::TRANSIENT_PREFIX . get_current_user_id(),
 			array(
-				'state'    => $state,
-				'verifier' => $verifier,
+				'state'       => $state,
+				'verifier'    => $verifier,
+				'woocommerce' => $woo,
 			),
 			self::TRANSIENT_TTL
 		);
@@ -172,7 +204,78 @@ class Connect {
 		$settings['store_name']      = isset( $body['storeName'] ) ? (string) $body['storeName'] : '';
 		update_option( Menu::OPTION_NAME, $settings );
 
+		// Only when this admin asked for it at the start, never because the
+		// response says so.
+		if ( ! empty( $pending['woocommerce'] ) && isset( $body['woocommerce'] ) && is_array( $body['woocommerce'] ) ) {
+			$this->continue_to_woocommerce( $body['woocommerce'] );
+		}
+
 		$this->back_to_settings( 'connected' );
+	}
+
+	/**
+	 * Whether this site and admin can link WooCommerce: WooCommerce is active
+	 * and the admin may approve its API access, as its own screen requires.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @return bool
+	 */
+	public static function woo_available() {
+		return class_exists( 'WooCommerce' ) && current_user_can( 'manage_woocommerce' );
+	}
+
+	/**
+	 * After the keys are saved: on to WooCommerce's approval screen, or back
+	 * with why OmniConva didn't start it.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param array $link The exchange's `woocommerce`: authorizeUrl, or skipped.
+	 *
+	 * @return void
+	 */
+	private function continue_to_woocommerce( $link ) {
+		$url = isset( $link['authorizeUrl'] ) ? (string) $link['authorizeUrl'] : '';
+		if ( '' !== $url ) {
+			if ( $this->is_woo_authorize_url( $url ) ) {
+				// This site's own host, so wp_safe_redirect() allows it.
+				wp_safe_redirect( $url );
+				exit;
+			}
+			$this->back_to_settings( 'connected_woo_unavailable' );
+		}
+
+		$skipped = isset( $link['skipped'] ) ? (string) $link['skipped'] : '';
+		if ( 'already_connected' === $skipped ) {
+			$this->back_to_settings( 'connected_woo_already' );
+		}
+		if ( 'connected_elsewhere' === $skipped ) {
+			$this->back_to_settings( 'connected_woo_elsewhere' );
+		}
+		$this->back_to_settings( 'connected_woo_unavailable' );
+	}
+
+	/**
+	 * Only WooCommerce's approval screen on this very site.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string $url URL from the exchange.
+	 *
+	 * @return bool
+	 */
+	private function is_woo_authorize_url( $url ) {
+		$target = wp_parse_url( $url );
+		$home   = wp_parse_url( home_url( '/' ) );
+		if ( ! is_array( $target ) || ! is_array( $home ) || empty( $target['host'] ) || empty( $home['host'] ) ) {
+			return false;
+		}
+		$scheme = isset( $target['scheme'] ) ? strtolower( $target['scheme'] ) : '';
+		$path   = isset( $target['path'] ) ? untrailingslashit( $target['path'] ) : '';
+		return in_array( $scheme, array( 'http', 'https' ), true )
+			&& strtolower( $target['host'] ) === strtolower( $home['host'] )
+			&& '/wc-auth/v1/authorize' === substr( $path, -strlen( '/wc-auth/v1/authorize' ) );
 	}
 
 	/**
@@ -203,12 +306,17 @@ class Connect {
 	 */
 	public static function notices() {
 		return array(
-			'connected'    => array( 'success', __( 'Connected to OmniConva. The chat widget is now live on your site.', 'omniconva-ai-sales-agent-connector' ) ),
-			'disconnected' => array( 'success', __( 'Disconnected. The chat widget no longer loads on your site.', 'omniconva-ai-sales-agent-connector' ) ),
-			'denied'       => array( 'warning', __( 'The connection was cancelled. You can try again whenever you are ready.', 'omniconva-ai-sales-agent-connector' ) ),
-			'expired'      => array( 'error', __( 'That connect link expired or was already used. Please click Connect again.', 'omniconva-ai-sales-agent-connector' ) ),
-			'unreachable'  => array( 'error', __( 'Could not reach OmniConva. Check your site can make outgoing requests, then try again, or set the keys up manually below.', 'omniconva-ai-sales-agent-connector' ) ),
-			'failed'       => array( 'error', __( 'The connection could not be completed. Please click Connect again, or set the keys up manually below.', 'omniconva-ai-sales-agent-connector' ) ),
+			'connected'                 => array( 'success', __( 'Connected to OmniConva. The chat widget is now live on your site.', 'omniconva-ai-sales-agent-connector' ) ),
+			'connected_woo_already'     => array( 'success', __( 'Connected to OmniConva. The chat widget is now live, and your WooCommerce products and orders were already syncing.', 'omniconva-ai-sales-agent-connector' ) ),
+			'connected_woo_elsewhere'   => array( 'warning', __( 'Connected to OmniConva and the chat widget is live, but your OmniConva store already gets its products from another site or platform. Change that under Settings → Connection in the OmniConva dashboard.', 'omniconva-ai-sales-agent-connector' ) ),
+			'connected_woo_unavailable' => array( 'warning', __( 'Connected to OmniConva and the chat widget is live, but WooCommerce syncing could not be started. Connect WooCommerce under Settings → Connection in the OmniConva dashboard.', 'omniconva-ai-sales-agent-connector' ) ),
+			'woo_connected'             => array( 'success', __( 'WooCommerce connected. OmniConva is importing your products now.', 'omniconva-ai-sales-agent-connector' ) ),
+			'woo_cancelled'             => array( 'warning', __( 'WooCommerce access was not approved, so products and orders won\'t sync. The chat widget still works. Click Reconnect to try again.', 'omniconva-ai-sales-agent-connector' ) ),
+			'disconnected'              => array( 'success', __( 'Disconnected. The chat widget no longer loads on your site.', 'omniconva-ai-sales-agent-connector' ) ),
+			'denied'                    => array( 'warning', __( 'The connection was cancelled. You can try again whenever you are ready.', 'omniconva-ai-sales-agent-connector' ) ),
+			'expired'                   => array( 'error', __( 'That connect link expired or was already used. Please click Connect again.', 'omniconva-ai-sales-agent-connector' ) ),
+			'unreachable'               => array( 'error', __( 'Could not reach OmniConva. Check your site can make outgoing requests, then try again, or set the keys up manually below.', 'omniconva-ai-sales-agent-connector' ) ),
+			'failed'                    => array( 'error', __( 'The connection could not be completed. Please click Connect again, or set the keys up manually below.', 'omniconva-ai-sales-agent-connector' ) ),
 		);
 	}
 

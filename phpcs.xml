@@ -7,6 +7,15 @@
         <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
     </rule>
 
+    <!-- WooCommerce's capability, checked before linking WooCommerce. -->
+    <rule ref="WordPress.WP.Capabilities">
+        <properties>
+            <property name="custom_capabilities" type="array">
+                <element value="manage_woocommerce"/>
+            </property>
+        </properties>
+    </rule>
+
     <rule ref="PHPCompatibility">
         <exclude name="Generic.Arrays.DisallowShortArraySyntax.Found"/>
     </rule>

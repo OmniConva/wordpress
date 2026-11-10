@@ -289,7 +289,12 @@ class Menu {
 	 */
 	private function render_notice() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only.
-		$code    = isset( $_GET['omniconva_notice'] ) ? sanitize_key( wp_unslash( $_GET['omniconva_notice'] ) ) : '';
+		$code = isset( $_GET['omniconva_notice'] ) ? sanitize_key( wp_unslash( $_GET['omniconva_notice'] ) ) : '';
+		if ( Connect::WOO_RETURN_NOTICE === $code ) {
+			// WooCommerce's approval screen adds success=1 (approved) or 0.
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only.
+			$code = isset( $_GET['success'] ) && '1' === sanitize_key( wp_unslash( $_GET['success'] ) ) ? 'woo_connected' : 'woo_cancelled';
+		}
 		$notices = array_merge( Connect::notices(), Appearance::notices() );
 		if ( ! isset( $notices[ $code ] ) ) {
 			return;
@@ -329,8 +334,9 @@ class Menu {
 					}
 					?>
 				</p>
+				<?php $this->render_woo_checkbox( 'omniconva-reconnect' ); ?>
 				<p>
-					<form action="<?php echo esc_url( $action_url ); ?>" method="post" style="display:inline">
+					<form id="omniconva-reconnect" action="<?php echo esc_url( $action_url ); ?>" method="post" style="display:inline">
 						<input type="hidden" name="action" value="omniconva_connect_start" />
 						<?php wp_nonce_field( 'omniconva_connect_start' ); ?>
 						<?php submit_button( __( 'Reconnect', 'omniconva-ai-sales-agent-connector' ), 'secondary', 'submit', false ); ?>
@@ -344,9 +350,10 @@ class Menu {
 			<?php else : ?>
 				<h2 class="title"><?php esc_html_e( 'Connect your site', 'omniconva-ai-sales-agent-connector' ); ?></h2>
 				<p><?php esc_html_e( 'Sign in to OmniConva and approve this site. Your keys are filled in automatically.', 'omniconva-ai-sales-agent-connector' ); ?></p>
-				<form action="<?php echo esc_url( $action_url ); ?>" method="post">
+				<form id="omniconva-connect" action="<?php echo esc_url( $action_url ); ?>" method="post">
 					<input type="hidden" name="action" value="omniconva_connect_start" />
 					<?php wp_nonce_field( 'omniconva_connect_start' ); ?>
+					<?php $this->render_woo_checkbox( 'omniconva-connect' ); ?>
 					<?php submit_button( __( 'Connect to OmniConva', 'omniconva-ai-sales-agent-connector' ), 'primary', 'submit', false ); ?>
 				</form>
 				<p class="description">
@@ -354,6 +361,35 @@ class Menu {
 				</p>
 			<?php endif; ?>
 		</div>
+		<?php
+	}
+
+	/**
+	 * "Also sync products and orders": after connecting, send the admin on to
+	 * WooCommerce's own approval screen. Only shown when WooCommerce is active
+	 * and the admin can approve it.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string $form_id The connect form the checkbox belongs to.
+	 *
+	 * @return void
+	 */
+	private function render_woo_checkbox( $form_id ) {
+		if ( ! Connect::woo_available() ) {
+			return;
+		}
+		?>
+		<p>
+			<label>
+				<input type="checkbox" name="<?php echo esc_attr( Connect::WOO_FIELD ); ?>" value="1" form="<?php echo esc_attr( $form_id ); ?>" checked="checked" />
+				<?php esc_html_e( 'Also sync WooCommerce products and orders', 'omniconva-ai-sales-agent-connector' ); ?>
+			</label>
+			<br />
+			<span class="description">
+				<?php esc_html_e( 'After you approve in OmniConva, WooCommerce asks you to give OmniConva read and write access to your store, so the AI agent can show your products and place orders.', 'omniconva-ai-sales-agent-connector' ); ?>
+			</span>
+		</p>
 		<?php
 	}
 
