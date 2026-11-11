@@ -12,7 +12,7 @@ Add an AI sales agent chatbot to WordPress and WooCommerce. It answers shoppers,
 
 == Description ==
 
-**OmniConva AI Sales Agent Connector** adds the OmniConva AI chatbot to your WordPress or WooCommerce store. Click Connect, approve the site in OmniConva, and an AI sales agent appears on every page. It answers product questions, recommends products, collects leads and helps shoppers finish their orders, all from the chat window.
+**OmniConva AI Sales Agent Connector** adds the OmniConva AI chatbot to your WordPress or WooCommerce store. Click Connect, approve the site in OmniConva, and an AI sales agent appears on every page. It answers product questions, recommends products, collects leads and helps shoppers finish their orders, all from the chat window. On WooCommerce stores the same Connect step can sync your products and orders, and the built-in Inbox lets your team answer conversations without leaving WordPress.
 
 Most website visitors leave without asking a question. An AI sales assistant replies straight away, at any hour, in a friendly chat widget, so fewer visitors leave and more of them become customers.
 
@@ -22,6 +22,7 @@ Most website visitors leave without asking a question. An AI sales assistant rep
 * **More sales.** The agent guides shoppers from their first question to checkout and can help a customer place an order in the chat.
 * **Lead capture.** An optional pre-chat form collects each visitor's name, email address and phone number before the conversation starts.
 * **Human handoff.** Your team can take over a conversation, and the visitor sees clearly when a human agent is replying.
+* **Inbox in WordPress.** Read and answer every conversation from **OmniConva AI Sales Agent → Inbox**, right in your WordPress admin.
 * **Knows returning customers.** Logged-in WordPress and WooCommerce customers are identified securely, so the AI agent can greet them by name and help with their account.
 
 = Live chat features =
@@ -40,33 +41,37 @@ Most website visitors leave without asking a question. An AI sales assistant rep
 
 = Built for WooCommerce stores =
 
-The plugin works on any WordPress site and is especially useful for WooCommerce. When a customer is logged in, the plugin sends their name, email address, avatar and WooCommerce billing phone and address to the AI agent. The AI sales agent can then answer order questions and help with purchases without asking the customer to type their details again.
+The plugin works on any WordPress site and is especially useful for WooCommerce. When you connect, tick **Also sync WooCommerce products and orders** and approve on WooCommerce's own screen: OmniConva imports your products, keeps them up to date, and creates the orders customers place in chat. There's no separate WooCommerce setup in the OmniConva dashboard.
+
+When a customer is logged in, the plugin sends their name, email address, avatar and WooCommerce billing phone and address to the AI agent. The AI sales agent can then answer order questions and help with purchases without asking the customer to type their details again.
 
 Customer identity is signed on your server with HMAC-SHA256 using your private Identity Secret. The secret stays on your server and is never sent to the browser, so visitors cannot pretend to be another customer.
 
 = Lightweight and simple =
 
 * Setup takes about a minute: click **Connect to OmniConva**, sign in or create a free account, and approve. Your keys are filled in for you, and you don't need to write any code.
+* Its own **OmniConva AI Sales Agent** menu, with **Settings** and **Inbox**.
 * A single script loads in the footer, and only after you have added a Site Key.
 * No new database tables, and no slowdown on your WordPress admin screens.
 * Works with any theme and page builder.
 
 = How it works =
 
-1. Install this plugin and open **OmniConva AI Sales Agent**.
-2. Click **Connect to OmniConva**. Sign in, or create a free OmniConva account, and approve your site.
+1. Install this plugin and open **OmniConva AI Sales Agent → Settings**.
+2. Click **Connect to OmniConva**. Sign in, or create a free OmniConva account, and approve your site. On WooCommerce stores, leave **Also sync WooCommerce products and orders** ticked to bring your catalog and orders along.
 3. You are sent back to WordPress with your Site Key and Identity Secret saved, and your site's domain allowed in OmniConva.
 4. The AI chat widget now appears on your site. Change the agent's name, status line, avatar shape, colors and greeting right on the same settings page, and set up its knowledge, tone and products in your OmniConva dashboard.
+5. Open **OmniConva AI Sales Agent → Inbox**, sign in with your OmniConva account, and answer conversations without leaving WordPress.
 
-Reply to conversations without leaving WordPress under **OmniConva AI Sales Agent → Inbox**. You manage the AI agent's training, leads, human handoff and analytics in the OmniConva dashboard.
+You manage the AI agent's training, leads and analytics in the OmniConva dashboard.
 
 == External services ==
 
 This plugin connects your site to the **OmniConva AI Sales Agent** service. The service runs the AI chatbot and stores conversations. The plugin cannot do anything without the service, and you need an OmniConva account and Site Key to use it.
 
-**When data is sent:** on the public side of your site, only after you have saved a Site Key. From your WordPress admin, only when an administrator clicks **Connect to OmniConva** or **Reconnect**, opens the plugin's settings page while connected (to load the chat widget settings), saves the chat widget settings there, or opens the Inbox screen.
+**When data is sent:** on the public side of your site, only after you have saved a Site Key. From your WordPress admin, only when an administrator clicks **Connect to OmniConva** or **Reconnect**, opens the plugin's settings page while connected (to load the chat widget settings) or saves the chat widget settings there, and when someone allowed to see the Inbox screen opens it.
 
-**The Inbox screen:** under **OmniConva AI Sales Agent → Inbox**, the plugin shows your OmniConva inbox from the OmniConva dashboard (dashboard.omniconva.com) in a frame. The frame's address carries your Site Key. The page is loaded from OmniConva by the browser of the administrator who opens the screen, and they sign in with their own OmniConva account in a window OmniConva opens. No WordPress user data and no Identity Secret is sent. Only accounts that are members of your OmniConva store can see its conversations.
+**The Inbox screen:** under **OmniConva AI Sales Agent → Inbox**, the plugin shows your OmniConva inbox from the OmniConva dashboard (dashboard.omniconva.com) in a frame. The frame's address carries your Site Key. The page is loaded from OmniConva by the browser of the person who opens the screen, and they sign in with their own OmniConva account in a window OmniConva opens. No WordPress user data and no Identity Secret is sent. Only accounts that are members of your OmniConva store can see its conversations.
 
 **What the Connect button sends:** your site's address, its name (the Site Title), the admin address OmniConva sends you back to, and two random one-time values used to secure the connection. If you tick **Also sync WooCommerce products and orders**, it also sends that choice and the admin address WooCommerce returns you to. Your server then receives the Site Key and Identity Secret directly from OmniConva. No WordPress user data is sent.
 
@@ -111,10 +116,10 @@ Please mention this service in your site's privacy policy.
 
 = Setup =
 
-1. In WordPress, go to **OmniConva AI Sales Agent**, or click **Settings** on the plugin's row on the Plugins screen.
-2. Click **Connect to OmniConva**, sign in or create an account, and approve. Only the OmniConva store owner can approve.
-3. Optional: tick **Credit link** to show a "Powered by OmniConva" link in the widget, and click **Save Changes**. It is off by default.
-4. Visit your site to see the AI chat widget.
+1. In WordPress, go to **OmniConva AI Sales Agent → Settings**, or click **Settings** on the plugin's row on the Plugins screen.
+2. Click **Connect to OmniConva**, sign in or create an account, and approve. Only the OmniConva store owner can approve. On WooCommerce stores, leave **Also sync WooCommerce products and orders** ticked and approve on WooCommerce's screen that follows.
+3. Optional: choose who sees the Inbox under **Inbox access** (administrators, or on WooCommerce stores shop managers too), tick **Credit link** to show a "Powered by OmniConva" link in the widget, and click **Save Changes**. The credit link is off by default.
+4. Visit your site to see the AI chat widget, and open **OmniConva AI Sales Agent → Inbox** to answer conversations.
 
 To set up by hand instead (for example if your server cannot make outgoing requests): in your OmniConva dashboard, open **Settings → Custom Chat**, enter your website's domain under **Site domain**, then paste the **Site Key** and, optionally, the **Identity Secret** into the plugin's settings and save.
 
@@ -126,7 +131,7 @@ Yes. The plugin connects your site to the OmniConva AI Sales Agent service. You 
 
 = Does it work with WooCommerce? =
 
-Yes. The AI chatbot works on any WordPress site, and it works especially well on WooCommerce stores. When you set an Identity Secret, logged-in customers are recognized automatically along with their WooCommerce billing details, so the AI agent can help with orders without asking for them again.
+Yes. The AI chatbot works on any WordPress site, and it works especially well on WooCommerce stores. **Connect to OmniConva** can sync your WooCommerce products and orders in the same step, so the AI agent knows your catalog. When you set an Identity Secret, logged-in customers are recognized automatically along with their WooCommerce billing details, so the AI agent can help with orders without asking for them again.
 
 = Can the AI chatbot take orders? =
 
@@ -134,7 +139,7 @@ Yes. The AI sales agent can guide a shopper through choosing products and help t
 
 = Can a human take over the chat? =
 
-Yes. Your team can join any conversation from the OmniConva dashboard. The widget shows the visitor when a human agent is replying.
+Yes. Your team can join any conversation from the OmniConva dashboard or from **OmniConva AI Sales Agent → Inbox** in WordPress. The widget shows the visitor when a human agent is replying.
 
 = I use a page cache or CDN. Anything to know? =
 
@@ -143,12 +148,12 @@ For logged-in users the plugin puts that user's name, email, phone and a signed 
 = The chat widget doesn't appear on my site. What should I check? =
 
 1. Make sure your website's domain is saved under **Settings → Custom Chat → Site domain** in your OmniConva dashboard. The widget only loads on that domain. `www.yourstore.com` and `yourstore.com` count as the same site, but any other subdomain, such as `shop.yourstore.com`, must be the one you enter.
-2. Make sure the Site Key under **OmniConva AI Sales Agent** matches the one in your OmniConva dashboard, and that you clicked **Save Changes**.
+2. Make sure the Site Key under **OmniConva AI Sales Agent → Settings** matches the one in your OmniConva dashboard, and that you clicked **Save Changes**.
 3. If you use a caching or optimization plugin, clear its cache so the page includes the widget script.
 
 = Will the chat widget slow down my website? =
 
-No. The plugin loads one script in the footer, and only after a Site Key is saved. It adds no database tables and loads nothing on your admin screens apart from a few styles on its own settings page.
+No. The plugin loads one script in the footer, and only after a Site Key is saved. It adds no database tables and loads nothing on your admin screens apart from a few styles on its own Settings and Inbox pages. The Inbox loads from OmniConva only when you open it.
 
 = Does it work with my theme or page builder? =
 
@@ -160,7 +165,7 @@ The Identity Secret lets the AI agent securely recognize logged-in users. The pl
 
 = Is it GDPR friendly? =
 
-The plugin sends data to OmniConva only after you add a Site Key, or when you click Connect, and it never sends your Identity Secret. See the **External services** section for exactly what is shared, and mention OmniConva in your privacy policy. How conversation data is stored and handled is covered by OmniConva's Privacy Policy.
+The plugin sends data to OmniConva only after you add a Site Key, when you click Connect, or when someone opens the Inbox, and it never sends your Identity Secret. See the **External services** section for exactly what is shared, and mention OmniConva in your privacy policy. How conversation data is stored and handled is covered by OmniConva's Privacy Policy.
 
 = Can visitors send images, files or voice messages? =
 
@@ -168,21 +173,32 @@ Yes. Visitors can attach photos, videos and files, or record a voice message in 
 
 = Does the widget add a link to OmniConva on my site? =
 
-Only if you want it to. A "Powered by OmniConva" link in the chat widget is off by default. You can turn it on under **OmniConva AI Sales Agent → Credit link**.
+Only if you want it to. A "Powered by OmniConva" link in the chat widget is off by default. You can turn it on under **OmniConva AI Sales Agent → Settings → Credit link**.
 
 = Can I change how the chat widget looks? =
 
-Yes. Under **OmniConva AI Sales Agent → Chat widget** you can set the agent name, the status line under it, the avatar shape, the header and text colors, and the greeting message. The settings are saved in OmniConva, so they match the Custom Chat settings in your OmniConva dashboard. Editing them from WordPress needs the Identity Secret, which the Connect button saves for you.
+Yes. Under **OmniConva AI Sales Agent → Settings → Chat widget** you can set the agent name, the status line under it, the avatar shape, the header and text colors, and the greeting message. The settings are saved in OmniConva, so they match the Custom Chat settings in your OmniConva dashboard. Editing them from WordPress needs the Identity Secret, which the Connect button saves for you.
 
 = Where do I see conversations and leads? =
 
-All conversations, captured leads, ratings and feedback appear in your OmniConva dashboard. You can also read and answer conversations in WordPress under **OmniConva AI Sales Agent → Inbox**, after signing in with your OmniConva account. By default only administrators see the Inbox. On WooCommerce stores, set **Inbox access** to include shop managers. Your WordPress admin must be on the same domain as your site, over HTTPS.
+All conversations, captured leads, ratings and feedback appear in your OmniConva dashboard. You can also read and answer conversations in WordPress under **OmniConva AI Sales Agent → Inbox**.
+
+= Can I reply to chats from WordPress? =
+
+Yes. **OmniConva AI Sales Agent → Inbox** shows your OmniConva inbox inside WordPress: the conversation list, each chat, and the customer's details. Click **Sign in to OmniConva** the first time, and sign in with your OmniConva account in the window that opens. Only members of your OmniConva store can see its conversations, so a WordPress login alone never opens them. After an hour you may be asked to click Sign in again, which takes one click.
+
+Your WordPress admin must be on your site's domain, over HTTPS; on any other address the Inbox won't load. You can always click **Open in OmniConva** to use the full dashboard in a new tab.
+
+= Who can see the Inbox? =
+
+Administrators, by default. On WooCommerce stores you can set **Inbox access** under **OmniConva AI Sales Agent → Settings** to include shop managers. Shop managers see only the Inbox, not the plugin's settings. Everyone still needs their own OmniConva account with access to your store.
 
 == Screenshots ==
 
 1. The plugin settings page: connect your site to OmniConva in one click, or enter your Site Key and optional Identity Secret by hand.
 2. The AI chat widget on the frontend, answering a shopper's questions in real time.
 3. The AI sales agent helping a customer place a WooCommerce order in the chat.
+4. The Inbox inside WordPress: conversations, the chat thread and the customer's details, ready to reply.
 
 == Changelog ==
 
