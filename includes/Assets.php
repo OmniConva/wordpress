@@ -29,6 +29,15 @@ class Assets {
 	const DEFAULT_API_BASE = 'https://api.omniconva.com';
 
 	/**
+	 * Dashboard URL used when OMNICONVA_DASHBOARD_URL is not defined.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @var string
+	 */
+	const DEFAULT_DASHBOARD_BASE = 'https://dashboard.omniconva.com';
+
+	/**
 	 * Assets constructor.
 	 *
 	 * @since 1.0.0
@@ -115,6 +124,26 @@ class Assets {
 		}
 
 		return untrailingslashit( esc_url_raw( $api_base ) );
+	}
+
+	/**
+	 * Resolve the OmniConva dashboard URL the Inbox screen frames.
+	 *
+	 * Overridable with OMNICONVA_DASHBOARD_URL in wp-config.php, alongside
+	 * OMNICONVA_API_BASE, for a self-hosted or local development dashboard.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @return string Dashboard URL without a trailing slash.
+	 */
+	public function get_dashboard_base() {
+		$base = self::DEFAULT_DASHBOARD_BASE;
+
+		if ( defined( 'OMNICONVA_DASHBOARD_URL' ) && is_string( OMNICONVA_DASHBOARD_URL ) && '' !== trim( OMNICONVA_DASHBOARD_URL ) ) {
+			$base = trim( OMNICONVA_DASHBOARD_URL );
+		}
+
+		return untrailingslashit( esc_url_raw( $base ) );
 	}
 
 	/**
