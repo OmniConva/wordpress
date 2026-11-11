@@ -23,6 +23,7 @@ There is no JS build here. `assets/js/widget.min.js` is built in the `web-chat-w
 - `includes/Admin/Menu.php`: the top-level OmniConva AI Sales Agent admin page (Settings API, option `omniconva_ai_sales_connector_settings`, sanitization, plugin-row Settings link).
 - `includes/Admin/Connect.php`: the Connect to OmniConva button (`admin-post.php` actions). Authorization code + PKCE against the API's `/wordpress/connect/*` routes; saves the keys into the same option. README.md → Connect button.
 - `includes/Admin/Appearance.php`: the Chat widget section (agent name, status text, avatar shape, colors, greeting). Reads and writes the store's settings in OmniConva via `/wordpress/widget-settings`, signed with the Identity Secret, and stores nothing locally. README.md → Chat widget settings.
+- `includes/Admin/Inbox.php`: the Inbox submenu, an iframe of the dashboard's `/embed/wordpress?siteKey=…` (dashboard base `https://dashboard.omniconva.com`, overridable with `OMNICONVA_DASHBOARD_URL`). It sends no credentials: the frame signs in through an OmniConva popup. Who sees it is the `inbox_access` setting (administrators, or shop managers too with WooCommerce). README.md → Inbox.
 - `includes/Assets.php`: enqueues the widget only on the frontend and only with a Site Key, prints `window.OmniConvaChat`, and signs the logged-in user (`hash_hmac('sha256', user ID, identity_secret)`).
 - `includes/Installer.php`: version/installed options. `uninstall.php` deletes all options.
 

@@ -50,6 +50,17 @@ Once connected, the settings page also edits the widget's look: agent name, stat
 - The section needs both keys. Without an Identity Secret it says to Reconnect. A `401` (usually a rotated secret) says the same.
 - Embed domains and the pre-chat form can't be changed this way. They stay dashboard-only.
 
+### Inbox
+
+**OmniConva AI Sales Agent → Inbox** (`includes/Admin/Inbox.php`) frames the dashboard's chat inbox: `{dashboard}/embed/wordpress?siteKey=…`. The dashboard defaults to `https://dashboard.omniconva.com`; override it with `define( 'OMNICONVA_DASHBOARD_URL', 'http://localhost:3000' );` in `wp-config.php`. The frame's URL carries only the public Site Key, and WordPress signs nobody in: a WordPress admin account alone never opens the store's conversations.
+
+- **Who sees it.** The **Inbox access** setting (`inbox_access`): `administrators` (the default, `manage_options`) or, with WooCommerce active, `shop_managers` (`manage_woocommerce`, which administrators have too). A shop manager then gets the top-level menu with only Inbox under it; the settings page stays `manage_options`. A saved value the site no longer offers, such as `shop_managers` after WooCommerce is deactivated, falls back to administrators only.
+- **Framing.** The dashboard sends `frame-ancestors` with the store's own site domains (`web-dashboard/proxy.ts`, from the API's `GET /wordpress/embed/frame-ancestors?siteKey=`), the same domains the widget is allowed on. wp-admin must be served from one of them, over HTTPS in production. Any other site gets `frame-ancestors 'none'`.
+- **Signing in.** The dashboard's own session cookies aren't sent to a cross-site frame, so the frame starts signed out and shows **Sign in to OmniConva**. That opens `{dashboard}/connect/wordpress/sign-in?siteKey=…` in a popup, a first-party window where the usual sign-in works. Once signed in, the popup asks `POST /wordpress/embed/handoff` for a 60-second single-use code (members of the Site Key's store only), posts it to the frame with `postMessage` targeted at the dashboard's own origin, and closes. The frame redeems it at `POST /wordpress/embed/session` for an access cookie partitioned under this site (`SameSite=None; Partitioned`).
+- **Lifetime.** That cookie has no refresh cookie, so it ends after an hour and the frame shows Sign in again. The popup is still signed in by then, so it takes one click.
+- **Wrong account.** If the account signed in isn't a member of the store, the frame and the popup say so, and the popup offers **Use another account**.
+- **Local development.** Partitioned cookies are only set when the API runs in production mode. In development the embedded cookie falls back to `SameSite=Lax`, which a cross-site frame doesn't send, so the signed-in inbox only loads when wp-admin and the dashboard are same-site.
+
 ### Manual setup
 
 The widget only loads on the domain saved for the store in the OmniConva dashboard (**Settings → Custom Chat → Site domain**). The API refuses its CORS requests from any other origin, so a site with the right Site Key but no domain set shows nothing. `www.` is folded; other subdomains have to match.
@@ -58,6 +69,7 @@ Then go to **OmniConva AI Sales Agent**, or use the Settings link on the plugin'
 
 - **Site Key** (`site_key`): the store's widget key from the dashboard. While it is empty, nothing loads on the frontend.
 - **Identity Secret** (`identity_secret`): optional. When set, a logged-in user is passed to the widget as `customer` (ID, display name, email, avatar, WooCommerce billing phone and address) with `hash = hash_hmac('sha256', user ID, secret)`. The secret itself never reaches the browser.
+- **Inbox access** (`inbox_access`): who sees the Inbox screen. See **Inbox**.
 - **Credit link** (`show_powered_by`): optional, off by default.
 - **Store name** (`store_name`): set by the Connect button for the "Connected to …" line; cleared when the Site Key changes by hand.
 
@@ -90,8 +102,9 @@ Classes are PSR-4 autoloaded from `includes/` under the `OmniConva\AiSalesAgentC
 | `includes/Admin/Menu.php` | Settings page, Settings API registration, sanitization, Settings link |
 | `includes/Admin/Connect.php` | Connect / Disconnect buttons: the PKCE handshake with the OmniConva API |
 | `includes/Admin/Appearance.php` | Chat widget settings section, read from and saved to the OmniConva API with signed requests |
+| `includes/Admin/Inbox.php` | Inbox submenu: the dashboard's chat inbox in an iframe |
 | `includes/Api.php` | REST registration point (no routes yet) |
-| `includes/Assets.php` | Widget enqueue, config object, signed customer identity |
+| `includes/Assets.php` | Widget enqueue, config object, signed customer identity, API and dashboard base URLs |
 | `includes/Installer.php` | Activation version tracking |
 | `uninstall.php` | Removes the plugin's options when it is deleted |
 | `assets/js/widget.min.js` | The widget bundle, built from the `web-chat-widget` repo |

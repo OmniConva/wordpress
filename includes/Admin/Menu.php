@@ -114,6 +114,14 @@ class Menu {
 		);
 
 		add_settings_field(
+			'inbox_access',
+			__( 'Inbox access', 'omniconva-ai-sales-agent-connector' ),
+			array( $this, 'render_inbox_access_field' ),
+			self::PAGE_SLUG,
+			'omniconva_ai_sales_connector_general'
+		);
+
+		add_settings_field(
 			'show_powered_by',
 			__( 'Credit link', 'omniconva-ai-sales-agent-connector' ),
 			array( $this, 'render_show_powered_by_field' ),
@@ -170,6 +178,14 @@ class Menu {
 		}
 
 		$sanitized['show_powered_by'] = ! empty( $settings['show_powered_by'] );
+
+		// Saves that don't come from this form (Connect, Disconnect) pass the
+		// stored settings back in, so the choice is kept; anything this site
+		// doesn't offer falls back to administrators only.
+		$inbox_access                       = isset( $settings[ Inbox::ACCESS_SETTING ] )
+			? sanitize_key( $settings[ Inbox::ACCESS_SETTING ] )
+			: ( isset( $existing[ Inbox::ACCESS_SETTING ] ) ? $existing[ Inbox::ACCESS_SETTING ] : '' );
+		$sanitized[ Inbox::ACCESS_SETTING ] = array_key_exists( $inbox_access, Inbox::access_choices() ) ? $inbox_access : Inbox::ACCESS_ADMINS;
 
 		// The OmniConva store name, for the "Connected to …" line. Set by the
 		// Connect button; a Site Key changed by hand no longer matches it.
@@ -234,6 +250,27 @@ class Menu {
 		<?php endif; ?>
 		<p class="description">
 			<?php esc_html_e( 'Used to sign logged-in customer identities (HMAC-SHA256). Keep this secret; it is never sent to the browser, and it is not shown here again once saved.', 'omniconva-ai-sales-agent-connector' ); ?>
+		</p>
+		<?php
+	}
+
+	/**
+	 * Render who may open the Inbox screen.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @return void
+	 */
+	public function render_inbox_access_field() {
+		$current = Inbox::access();
+		?>
+		<select id="omniconva_ai_sales_connector_inbox_access" name="<?php echo esc_attr( self::OPTION_NAME ); ?>[<?php echo esc_attr( Inbox::ACCESS_SETTING ); ?>]">
+			<?php foreach ( Inbox::access_choices() as $value => $label ) : ?>
+				<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $current, $value ); ?>><?php echo esc_html( $label ); ?></option>
+			<?php endforeach; ?>
+		</select>
+		<p class="description">
+			<?php esc_html_e( 'Who sees the Inbox menu in WordPress. They still sign in with their own OmniConva account, and only members of your OmniConva store can see its conversations.', 'omniconva-ai-sales-agent-connector' ); ?>
 		</p>
 		<?php
 	}

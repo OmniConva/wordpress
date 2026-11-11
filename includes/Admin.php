@@ -29,6 +29,7 @@ class Admin {
         new Admin\Menu();
         new Admin\Connect();
         new Admin\Appearance();
+        new Admin\Inbox();
     }
 
     /**
